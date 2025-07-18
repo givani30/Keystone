@@ -5,6 +5,7 @@ from typing import Dict, Any
 
 from .core.layout_parser import parse_layout
 from .utils.theme_loader import load_theme, load_icons
+from .utils.pdf_generator import generate_pdf
 from .templates.skill_tree import generate_html
 
 
@@ -151,15 +152,17 @@ Examples:
                 return 1
         
         if args.format == "pdf" or args.format == "both":
-            # PDF generation not yet implemented
-            if output_extension == ".pdf" or output_extension is None:
-                pdf_output = f"{output_name}.pdf"
+            # Generate PDF output
+            if output_extension == ".pdf":
+                pdf_output = output_dir / f"{output_name}{output_extension}"
+            elif output_extension is None:
+                pdf_output = output_dir / f"{output_name}.pdf"
             else:
-                pdf_output = f"{output_name}_pdf.pdf"
+                pdf_output = output_dir / f"{output_name}_pdf.pdf"
             
-            print(f"Warning: PDF generation not yet implemented. Use --format html for now.", file=sys.stderr)
-            if args.format == "pdf":
-                return 1
+            print(f"Generating PDF: {pdf_output}")
+            generate_pdf(html_content, pdf_output)
+            print(f"Generated PDF: {Path(pdf_output).absolute()}")
         
         return 0
         
