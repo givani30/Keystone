@@ -179,18 +179,23 @@ class TestMainCLI:
         assert returncode == 1
         assert "Template 'reference_card' not yet implemented" in stderr
     
-    def test_pdf_format_warning(self, sample_layout, temp_dir):
-        """Test PDF format produces warning."""
+    def test_pdf_format_generation(self, sample_layout, temp_dir):
+        """Test PDF format generates PDF file."""
         returncode, stdout, stderr = self.run_cli([
             str(sample_layout),
             "--format", "pdf"
         ], cwd=temp_dir)
         
-        assert returncode == 1
-        assert "PDF generation not yet implemented" in stderr
+        assert returncode == 0
+        assert "Generating PDF:" in stdout
+        assert "Generated PDF:" in stdout
+        
+        # PDF file should be created
+        pdf_file = temp_dir / "test_output.pdf"
+        assert pdf_file.exists()
     
     def test_both_format(self, sample_layout, temp_dir):
-        """Test 'both' format generates HTML and shows PDF warning."""
+        """Test 'both' format generates both HTML and PDF files."""
         returncode, stdout, stderr = self.run_cli([
             str(sample_layout),
             "--format", "both"
@@ -198,11 +203,14 @@ class TestMainCLI:
         
         assert returncode == 0
         assert "Generated HTML:" in stdout
-        assert "PDF generation not yet implemented" in stderr
+        assert "Generating PDF:" in stdout
+        assert "Generated PDF:" in stdout
         
-        # HTML should still be generated
-        output_file = temp_dir / "test_output.html"
-        assert output_file.exists()
+        # Both files should be generated
+        html_file = temp_dir / "test_output.html"
+        pdf_file = temp_dir / "test_output.pdf"
+        assert html_file.exists()
+        assert pdf_file.exists()
     
     def test_missing_layout_file(self, temp_dir):
         """Test error handling for missing layout file."""

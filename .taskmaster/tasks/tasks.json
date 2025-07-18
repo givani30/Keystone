@@ -120,7 +120,7 @@
           4,
           5
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -128,7 +128,7 @@
             "description": "Implement logic to iterate through all specified keybind sources in the layout file and load their data using the data loader module.",
             "dependencies": [],
             "details": "Enhance the layout parser to loop through each category and its associated sources. For each source, call the data loader to parse and validate the JSON file, collecting the resulting data structures for merging.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -139,7 +139,7 @@
               1
             ],
             "details": "Design the merging logic so that for each keybind, the value from the highest-priority source (inline > first source > second source, etc.) is used. Handle merging at the keybind level, respecting the specified order.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -150,7 +150,7 @@
               2
             ],
             "details": "After merging all external sources, process inline keybinds and update the merged data structure so that any overlapping keys are replaced by the inline definitions.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -161,7 +161,7 @@
               3
             ],
             "details": "Detect and handle scenarios where keys are missing from some sources, or where multiple sources define the same keybind with different actions. Decide on error handling or warning strategies for unresolved conflicts.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -172,7 +172,7 @@
               4
             ],
             "details": "Create test cases with layout files and source data that exercise all aspects of the merging logic. Verify that the final merged output matches the expected results according to the override and priority rules.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -255,7 +255,7 @@
           6,
           8
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -263,7 +263,7 @@
             "description": "Set up the CLI argument parser using `argparse` to handle required and optional arguments, including layout file path, output file, and format options.",
             "dependencies": [],
             "details": "In `keystone/main.py`, import `argparse`, create an `ArgumentParser`, and define arguments for the layout file (required), output file (optional, default `output.html`), and format (optional, e.g., `html`, `pdf`, `both`). Generate help and usage messages automatically. Exit with appropriate error codes for invalid inputs.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -274,7 +274,7 @@
               1
             ],
             "details": "After parsing arguments, call the layout parser (Task 6) to process the layout file, merge data from sources and inline definitions, and apply `pick_category` filtering if specified. Load the theme (Task 7) and render the content using the skill tree template (Task 8). Handle any module-specific errors gracefully, providing clear user feedback.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -285,7 +285,7 @@
               2
             ],
             "details": "Write the rendered HTML to the file specified by `--output` (or default). If `--format` includes `pdf` or `both`, call the PDF generator (Task 10), handling the case where `weasyprint` is not installed. Ensure file operations are atomic where possible and provide clear error messages for permission or filesystem issues.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -298,7 +298,7 @@
               3
             ],
             "details": "Write tests that invoke the CLI with various argument combinations, verifying correct file generation and content. Test error cases: missing layout file, invalid file paths, missing dependencies (e.g., `weasyprint`), permission errors, and invalid input formats. Include tests for config file auto-discovery (Task 15) when no layout file is provided. Ensure tests run from different directories and validate both output and error messages.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -313,7 +313,7 @@
         "dependencies": [
           9
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -321,7 +321,7 @@
             "description": "Implement PDF generation in keystone/utils/pdf_generator.py using WeasyPrint. Ensure that if WeasyPrint is not installed, the function handles ImportError gracefully by printing a specific error message to stderr and exiting without crashing.",
             "dependencies": [],
             "details": "Create a generate_pdf(html_content, output_path) function. Use a try-except ImportError block to check for WeasyPrint. If missing, print the error and exit. If present, use weasyprint.HTML(string=html_content).write_pdf(output_path).",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -332,7 +332,7 @@
               1
             ],
             "details": "Modify the CLI parser to accept --format with choices 'html', 'pdf', or 'both'. Integrate the generate_pdf function so that PDF output is triggered when requested.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -344,7 +344,7 @@
               2
             ],
             "details": "Test with WeasyPrint installed: ensure PDF is generated. Test without WeasyPrint: run with --format pdf, assert error message is printed and no PDF is created.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -703,7 +703,7 @@
     ],
     "metadata": {
       "created": "2025-07-18T10:22:32.244Z",
-      "updated": "2025-07-18T11:04:05.815Z",
+      "updated": "2025-07-18T11:28:44.525Z",
       "description": "Tasks for master context"
     }
   }
