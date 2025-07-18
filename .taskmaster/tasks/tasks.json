@@ -415,7 +415,7 @@
         "dependencies": [
           7
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -423,7 +423,7 @@
             "description": "Implement the logic to generate a dense HTML table layout using <table>, <thead>, <tbody>, <tr>, <th>, and <td> elements. Ensure the structure is semantically correct and supports dynamic data rendering.",
             "dependencies": [],
             "details": "Create the core function in reference_card.py that takes structured data and outputs a well-formed HTML table. Use table headers for category or field names and rows for keybind entries. Avoid unnecessary nesting and ensure each row has consistent columns.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -434,7 +434,7 @@
               1
             ],
             "details": "Integrate CSS rules for table, header, and cell appearance. Use the theme dictionary to set colors, fonts, and spacing. Ensure the table is visually dense but readable, with clear distinction between headers and data rows.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -446,7 +446,7 @@
               2
             ],
             "details": "Create test cases that pass sample data and theme settings to the template function. Assert that the output HTML contains the expected structure and styles. Render the HTML in a browser or viewer to visually confirm the table layout and styling.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -703,7 +703,7 @@
     ],
     "metadata": {
       "created": "2025-07-18T10:22:32.244Z",
-      "updated": "2025-07-18T11:34:56.042Z",
+      "updated": "2025-07-18T11:48:13.647Z",
       "description": "Tasks for master context"
     }
   }
