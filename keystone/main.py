@@ -1,14 +1,216 @@
 import argparse
 import sys
 import importlib
+import json
 from pathlib import Path
-from typing import Dict, Any
 
 from .core.layout_parser import parse_layout
 from .core.validator import validate_references
 from .utils.theme_loader import load_theme, load_icons
 from .utils.pdf_generator import generate_pdf
 from .utils.discovery import find_layout_file
+
+
+def handle_validate_command(args) -> int:
+    """Handle the --validate command."""
+    # Determine layout file to use
+    if args.layout_file:
+        layout_file_path = args.layout_file
+    else:
+        # Try to auto-discover layout file
+        print("No layout file specified, searching for configuration file...")
+        discovered_file = find_layout_file()
+        if discovered_file:
+            layout_file_path = discovered_file
+            print(f"Found configuration file: {layout_file_path}")
+        else:
+            print("Error: No layout file specified and no configuration file found.", file=sys.stderr)
+            print("Searched for: keystone.yml, layout.yml, .keystone.yml", file=sys.stderr)
+            return 1
+
+    # Check if layout file exists
+    layout_path = Path(layout_file_path)
+    if not layout_path.exists():
+        print(f"Error: Layout file '{layout_file_path}' not found.", file=sys.stderr)
+        return 1
+
+    try:
+        # Parse the layout file
+        print(f"Validating layout file: {layout_file_path}")
+        layout_data = parse_layout(layout_file_path)
+        
+        # Determine theme to use (CLI override takes precedence)
+        theme_name = args.theme or layout_data.get("theme", "default")
+        print(f"Validating theme: {theme_name}")
+        
+        # Load theme and icons
+        theme = load_theme(theme_name)
+        icons = load_icons()
+        
+        # Validate theme and icon references
+        print("Validating theme and icon references...")
+        is_valid, error_message = validate_references(layout_data, theme, icons)
+        
+        if is_valid:
+            print("✓ Validation successful! All references are valid.")
+            return 0
+        else:
+            print(f"✗ Validation failed: {error_message}", file=sys.stderr)
+            return 1
+            
+    except Exception as e:
+        print(f"✗ Validation failed: {e}", file=sys.stderr)
+        return 1
+
+
+def handle_init_command() -> int:
+    """Handle the --init command to create example files."""
+    try:
+        # Create example layout.yml file
+        layout_content = """# Keystone Layout Configuration Example
+# This file defines how to combine keybind data sources and generate cheatsheets
+
+# Required fields
+title: "Example Cheatsheet"
+template: "skill_tree"  # or "reference_card"
+theme: "default"
+output_name: "cheatsheet"
+
+# Define categories for your keybinds
+categories:
+  - name: "Editing"
+    theme_color: "blue"
+    icon_name: "terminal"
+    sources:
+      - file: "example_keybinds.json"
+        pick_category: "editing"
+    # Optional inline keybinds (highest priority - will override source data)
+    keybinds:
+      - action: "Save file"
+        keys: "Ctrl+S"
+        description: "Save the current file"
+
+  - name: "Navigation" 
+    theme_color: "purple"
+    icon_name: "grid"
+    sources:
+      - file: "example_keybinds.json"
+        pick_category: "navigation"
+"""
+
+        layout_file = Path("keystone.yml")
+        if layout_file.exists():
+            print(f"Warning: {layout_file} already exists, skipping...")
+        else:
+            with open(layout_file, 'w', encoding='utf-8') as f:
+                f.write(layout_content)
+            print(f"Created: {layout_file}")
+
+        # Create example keybinds JSON file
+        keybinds_content = {
+            "tool": "Example Editor",
+            "version": "1.0",
+            "categories": [
+                {
+                    "name": "editing",
+                    "keybinds": [
+                        {
+                            "action": "Copy",
+                            "keys": "Ctrl+C",
+                            "description": "Copy selected text"
+                        },
+                        {
+                            "action": "Paste",
+                            "keys": "Ctrl+V", 
+                            "description": "Paste text from clipboard"
+                        },
+                        {
+                            "action": "Cut",
+                            "keys": "Ctrl+X",
+                            "description": "Cut selected text"
+                        }
+                    ]
+                },
+                {
+                    "name": "navigation",
+                    "keybinds": [
+                        {
+                            "action": "Find",
+                            "keys": "Ctrl+F",
+                            "description": "Open find dialog"
+                        },
+                        {
+                            "action": "Go to line",
+                            "keys": "Ctrl+G",
+                            "description": "Jump to a specific line number"
+                        },
+                        {
+                            "action": "Quick open",
+                            "keys": "Ctrl+P",
+                            "description": "Quickly open files"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        keybinds_file = Path("example_keybinds.json")
+        if keybinds_file.exists():
+            print(f"Warning: {keybinds_file} already exists, skipping...")
+        else:
+            with open(keybinds_file, 'w', encoding='utf-8') as f:
+                json.dump(keybinds_content, f, indent=2)
+            print(f"Created: {keybinds_file}")
+
+        print("\n📁 Example files created successfully!")
+        print("📖 To generate a cheatsheet, run: keystone keystone.yml")
+        print("📖 To see all options, run: keystone --help")
+        
+        return 0
+        
+    except Exception as e:
+        print(f"Error creating example files: {e}", file=sys.stderr)
+        return 1
+
+
+def handle_list_themes_command() -> int:
+    """Handle the --list-themes command."""
+    try:
+        # Get the themes directory path relative to this module
+        current_dir = Path(__file__).parent
+        themes_dir = current_dir / "themes"
+        
+        if not themes_dir.exists():
+            print("Error: Themes directory not found.", file=sys.stderr)
+            return 1
+        
+        # Find all .json files in the themes directory
+        theme_files = list(themes_dir.glob("*.json"))
+        
+        if not theme_files:
+            print("No themes found in the themes directory.")
+            return 0
+        
+        print("Available themes:")
+        for theme_file in sorted(theme_files):
+            theme_name = theme_file.stem
+            
+            # Try to load the theme to get description if available
+            try:
+                with open(theme_file, 'r', encoding='utf-8') as f:
+                    theme_data = json.load(f)
+                description = theme_data.get('description', 'No description available')
+                print(f"  • {theme_name} - {description}")
+            except Exception:
+                print(f"  • {theme_name}")
+        
+        print("\n📖 To use a theme, run: keystone layout.yml --theme <theme_name>")
+        
+        return 0
+        
+    except Exception as e:
+        print(f"Error listing themes: {e}", file=sys.stderr)
+        return 1
 
 
 def main():
@@ -71,18 +273,15 @@ Examples:
     args = parser.parse_args()
 
     try:
-        # For now, focus on basic HTML generation
+        # Handle helper commands
         if args.validate:
-            print("Validation mode not yet implemented.")
-            return 1
+            return handle_validate_command(args)
         
         if args.init:
-            print("Init mode not yet implemented.")
-            return 1
+            return handle_init_command()
             
         if args.list_themes:
-            print("List themes mode not yet implemented.")
-            return 1
+            return handle_list_themes_command()
 
         # Determine layout file to use
         if args.layout_file:

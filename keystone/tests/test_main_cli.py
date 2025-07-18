@@ -512,3 +512,218 @@ class TestMainCLI:
         # When output has .html extension, PDF gets _pdf suffix 
         pdf_output = custom_output.parent / f"{custom_output.stem}_pdf.pdf"
         assert pdf_output.exists()
+
+    def test_validate_command_with_valid_layout(self, sample_layout, temp_dir):
+        """Test --validate command with a valid layout file."""
+        returncode, stdout, stderr = self.run_cli([
+            str(sample_layout),
+            "--validate"
+        ], cwd=temp_dir)
+        
+        if returncode != 0:
+            print(f"STDOUT: {stdout}")
+            print(f"STDERR: {stderr}")
+        
+        assert returncode == 0
+        assert "✓ Validation successful!" in stdout
+        assert "All references are valid" in stdout
+
+    def test_validate_command_auto_discovery(self, temp_dir):
+        """Test --validate command with auto-discovery."""
+        # Create a keystone.yml file in the temp directory
+        layout_data = {
+            "title": "Auto-discovered Test Cheatsheet",
+            "template": "skill_tree",
+            "theme": "default",
+            "output_name": "test_output",
+            "categories": [
+                {
+                    "name": "File Operations",
+                    "theme_color": "blue",
+                    "icon_name": "terminal",
+                    "keybinds": [
+                        {
+                            "action": "Open file",
+                            "keys": "Ctrl+O",
+                            "description": "Open a file"
+                        }
+                    ]
+                }
+            ]
+        }
+        
+        keystone_file = temp_dir / "keystone.yml"
+        with open(keystone_file, 'w') as f:
+            yaml.dump(layout_data, f)
+        
+        returncode, stdout, stderr = self.run_cli([
+            "--validate"
+        ], cwd=temp_dir)
+        
+        if returncode != 0:
+            print(f"STDOUT: {stdout}")
+            print(f"STDERR: {stderr}")
+        
+        assert returncode == 0
+        assert "Found configuration file:" in stdout
+        assert "✓ Validation successful!" in stdout
+
+    def test_validate_command_with_invalid_layout(self, temp_dir):
+        """Test --validate command with an invalid layout file."""
+        # Create a layout file with invalid theme/icon references
+        invalid_layout_data = {
+            "title": "Invalid Test Cheatsheet",
+            "template": "skill_tree",
+            "theme": "default",
+            "output_name": "test_output",
+            "categories": [
+                {
+                    "name": "File Operations",
+                    "theme_color": "nonexistent_color",
+                    "icon_name": "nonexistent_icon",
+                    "keybinds": [
+                        {
+                            "action": "Open file",
+                            "keys": "Ctrl+O",
+                            "description": "Open a file"
+                        }
+                    ]
+                }
+            ]
+        }
+        
+        invalid_layout = temp_dir / "invalid_layout.yml"
+        with open(invalid_layout, 'w') as f:
+            yaml.dump(invalid_layout_data, f)
+        
+        returncode, stdout, stderr = self.run_cli([
+            str(invalid_layout),
+            "--validate"
+        ], cwd=temp_dir)
+        
+        assert returncode == 1
+        assert "✗ Validation failed:" in stderr
+
+    def test_list_themes_command(self, temp_dir):
+        """Test --list-themes command."""
+        returncode, stdout, stderr = self.run_cli([
+            "--list-themes"
+        ], cwd=temp_dir)
+        
+        if returncode != 0:
+            print(f"STDOUT: {stdout}")
+            print(f"STDERR: {stderr}")
+        
+        assert returncode == 0
+        assert "Available themes:" in stdout
+        assert "• default" in stdout
+        assert "• dark" in stdout
+        assert "• minimal" in stdout
+        assert "To use a theme, run:" in stdout
+
+    def test_init_command(self, temp_dir):
+        """Test --init command creates example files."""
+        returncode, stdout, stderr = self.run_cli([
+            "--init"
+        ], cwd=temp_dir)
+        
+        if returncode != 0:
+            print(f"STDOUT: {stdout}")
+            print(f"STDERR: {stderr}")
+        
+        assert returncode == 0
+        assert "Created: keystone.yml" in stdout
+        assert "Created: example_keybinds.json" in stdout
+        assert "📁 Example files created successfully!" in stdout
+        
+        # Check that files were actually created
+        keystone_file = temp_dir / "keystone.yml"
+        keybinds_file = temp_dir / "example_keybinds.json"
+        
+        assert keystone_file.exists()
+        assert keybinds_file.exists()
+        
+        # Check that created files have valid content
+        with open(keystone_file, 'r') as f:
+            layout_content = yaml.safe_load(f)
+            assert layout_content["title"] == "Example Cheatsheet"
+            assert layout_content["template"] == "skill_tree"
+            assert layout_content["theme"] == "default"
+            assert len(layout_content["categories"]) == 2
+        
+        with open(keybinds_file, 'r') as f:
+            keybinds_content = json.load(f)
+            assert keybinds_content["tool"] == "Example Editor"
+            assert keybinds_content["version"] == "1.0"
+            assert len(keybinds_content["categories"]) == 2
+
+    def test_init_command_handles_existing_files(self, temp_dir):
+        """Test --init command handles existing files gracefully."""
+        # Create existing files
+        existing_keystone = temp_dir / "keystone.yml"
+        existing_keybinds = temp_dir / "example_keybinds.json"
+        
+        existing_keystone.write_text("existing content")
+        existing_keybinds.write_text("existing content")
+        
+        returncode, stdout, stderr = self.run_cli([
+            "--init"
+        ], cwd=temp_dir)
+        
+        if returncode != 0:
+            print(f"STDOUT: {stdout}")
+            print(f"STDERR: {stderr}")
+        
+        assert returncode == 0
+        assert "Warning: keystone.yml already exists, skipping..." in stdout
+        assert "Warning: example_keybinds.json already exists, skipping..." in stdout
+        
+        # Check that existing files were not overwritten
+        assert existing_keystone.read_text() == "existing content"
+        assert existing_keybinds.read_text() == "existing content"
+
+    def test_init_and_validate_integration(self, temp_dir):
+        """Test that files created by --init pass --validate."""
+        # First run init
+        init_returncode, init_stdout, init_stderr = self.run_cli([
+            "--init"
+        ], cwd=temp_dir)
+        
+        assert init_returncode == 0
+        
+        # Then run validate
+        validate_returncode, validate_stdout, validate_stderr = self.run_cli([
+            "--validate"
+        ], cwd=temp_dir)
+        
+        if validate_returncode != 0:
+            print(f"VALIDATE STDOUT: {validate_stdout}")
+            print(f"VALIDATE STDERR: {validate_stderr}")
+        
+        assert validate_returncode == 0
+        assert "✓ Validation successful!" in validate_stdout
+
+    def test_init_and_generate_integration(self, temp_dir):
+        """Test that files created by --init can generate output."""
+        # First run init
+        init_returncode, init_stdout, init_stderr = self.run_cli([
+            "--init"
+        ], cwd=temp_dir)
+        
+        assert init_returncode == 0
+        
+        # Then generate output
+        generate_returncode, generate_stdout, generate_stderr = self.run_cli([
+            "keystone.yml"
+        ], cwd=temp_dir)
+        
+        if generate_returncode != 0:
+            print(f"GENERATE STDOUT: {generate_stdout}")
+            print(f"GENERATE STDERR: {generate_stderr}")
+        
+        assert generate_returncode == 0
+        assert "Generated HTML:" in generate_stdout
+        
+        # Check that output file was created
+        output_file = temp_dir / "cheatsheet.html"
+        assert output_file.exists()

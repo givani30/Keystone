@@ -612,7 +612,7 @@
         "dependencies": [
           13
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -620,7 +620,7 @@
             "description": "Define and implement the CLI argument parsing logic in keystone/main.py to support the new helper commands: --validate, --init, and --list-themes. Ensure each argument is clearly documented and integrated into the CLI help output.",
             "dependencies": [],
             "details": "Use argparse or Typer to add the new arguments. Ensure that running the CLI with --help displays clear usage instructions for each helper command.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -631,7 +631,7 @@
               1
             ],
             "details": "Implement the command handlers in keystone/main.py. For --validate, invoke the validation logic and exit. For --init, generate example files in the current directory. For --list-themes, scan keystone/themes and print theme names.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -642,7 +642,7 @@
               2
             ],
             "details": "Create and run test cases for each command. Check file creation, output correctness, and error handling. Update documentation if necessary based on test results.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -703,7 +703,7 @@
     ],
     "metadata": {
       "created": "2025-07-18T10:22:32.244Z",
-      "updated": "2025-07-18T12:39:28.124Z",
+      "updated": "2025-07-18T13:02:57.780Z",
       "description": "Tasks for master context"
     }
   }
