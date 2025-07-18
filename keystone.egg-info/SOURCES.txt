@@ -4,6 +4,7 @@ keystone/main.py
 keystone.egg-info/PKG-INFO
 keystone.egg-info/SOURCES.txt
 keystone.egg-info/dependency_links.txt
+keystone.egg-info/entry_points.txt
 keystone.egg-info/requires.txt
 keystone.egg-info/top_level.txt
 keystone/core/__init__.py
@@ -11,8 +12,13 @@ keystone/core/data_loader.py
 keystone/core/generator.py
 keystone/core/layout_parser.py
 keystone/core/validator.py
+keystone/core/tests/test_data_loader.py
+keystone/core/tests/test_layout_parser.py
+keystone/core/tests/test_validator.py
 keystone/templates/reference_card.py
 keystone/templates/skill_tree.py
+keystone/templates/tests/__init__.py
+keystone/templates/tests/test_skill_tree.py
 keystone/utils/discovery.py
 keystone/utils/pdf_generator.py
 keystone/utils/theme_loader.py
