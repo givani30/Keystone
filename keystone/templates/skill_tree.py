@@ -19,7 +19,7 @@ def generate_html(data: Dict[str, Any], theme: Dict[str, Any], icons: Dict[str, 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{data.get("tool", "Keystone")} - Keybind Cheatsheet</title>
+    <title>{data.get("title", data.get("tool", "Keystone"))} - Keybind Cheatsheet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -34,7 +34,7 @@ def generate_html(data: Dict[str, Any], theme: Dict[str, Any], icons: Dict[str, 
 <body class="{theme["base_styles"]["body"]}">
     <div class="{theme["base_styles"]["container"]}">
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">{data.get("tool", "Keystone")} Keybind Cheatsheet</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">{data.get("title", data.get("tool", "Keystone"))}</h1>
             {f'<p class="text-gray-600">Version: {data["version"]}</p>' if data.get("version") else ''}
         </header>
         
@@ -173,11 +173,24 @@ def generate_key_display(keys: List[str], theme: Dict[str, Any]) -> str:
     if not keys:
         return '<span class="text-gray-400">-</span>'
     
-    key_html = []
+    key_combinations = []
     key_class = theme["keybind_styles"]["key"]
     
     for key in keys:
-        key_html.append(f'<kbd class="{key_class} keybind-key">{key}</kbd>')
+        # Split compound keys like "Ctrl+S" into individual key boxes
+        individual_keys = key.split('+')
+        key_boxes = []
+        
+        for i, individual_key in enumerate(individual_keys):
+            # Clean up the key (remove extra spaces)
+            clean_key = individual_key.strip()
+            key_boxes.append(f'<kbd class="{key_class} keybind-key">{clean_key}</kbd>')
+            
+            # Add "+" separator between keys (but not after the last one)
+            if i < len(individual_keys) - 1:
+                key_boxes.append('<span class="text-gray-500 mx-1">+</span>')
+        
+        key_combinations.append(''.join(key_boxes))
     
-    # Join multiple keys with "+"
-    return f'<div class="{theme["keybind_styles"]["key_group"]}">{"".join(key_html)}</div>'
+    # Join multiple key combinations with spacing
+    return f'<div class="{theme["keybind_styles"]["key_group"]}">{"<span class=\"mx-2\"></span>".join(key_combinations)}</div>'

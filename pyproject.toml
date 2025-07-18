@@ -9,3 +9,6 @@ dependencies = [
 [project.optional-dependencies]
 pdf = ["weasyprint>=60.0"]
 dev = ["pytest", "black", "mypy"]
+
+[project.scripts]
+keystone = "keystone.main:main"
