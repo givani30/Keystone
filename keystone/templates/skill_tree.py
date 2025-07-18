@@ -42,7 +42,7 @@ def generate_html(data: Dict[str, Any], theme: Dict[str, Any], icons: Dict[str, 
             {f'<p class="text-gray-600">Version: {data["version"]}</p>' if data.get("version") else ''}
         </header>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="{theme.get('grid_styles', {}).get('container', 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6')}">
             {generate_categories(data.get("categories", []), theme, icons)}
         </div>
     </div>
@@ -102,8 +102,13 @@ def generate_category_card(category: Dict[str, Any], theme: Dict[str, Any], icon
     color_styles = theme["color_variants"][color_variant]
     
     # Build the card HTML
+    card_min_width = theme.get('grid_styles', {}).get('card_min_width', '')
+    card_class = theme["card_styles"]["card"]
+    if card_min_width:
+        card_class += f" {card_min_width}"
+    
     card_html = f'''
-    <div class="{theme["card_styles"]["card"]}">
+    <div class="{card_class}">
         <div class="{theme["card_styles"]["card_header"]} {color_styles["header"]}">
             <div class="flex items-center gap-3">
                 {icon_svg}
