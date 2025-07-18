@@ -18,5 +18,6 @@
     "purple": { "header": "bg-purple-900 text-purple-100", "accent": "text-purple-400" },
     "green": { "header": "bg-green-900 text-green-100", "accent": "text-green-400" },
     "orange": { "header": "bg-orange-900 text-orange-100", "accent": "text-orange-400" }
-  }
+  },
+  "print_styles": "@media print { * { box-shadow: none !important; text-shadow: none !important; } body { background: white !important; color: black !important; font-size: 10pt; } .container { max-width: none !important; margin: 0 !important; padding: 0.5cm !important; } .grid { display: block !important; } .card, .bg-gray-800, .bg-gray-900, .bg-blue-900, .bg-purple-900, .bg-green-900, .bg-orange-900 { background: white !important; border: 1px solid #000 !important; page-break-inside: avoid; margin-bottom: 0.5cm; } .card-header, .bg-blue-900, .bg-purple-900, .bg-green-900, .bg-orange-900 { background: white !important; border-bottom: 1px solid #000 !important; } .text-gray-100, .text-gray-200, .text-blue-100, .text-purple-100, .text-green-100, .text-orange-100, .text-blue-400, .text-purple-400, .text-green-400, .text-orange-400 { color: #333 !important; } .border-gray-700, .border-gray-600, .border-b { border-color: #000 !important; } .keybind-key, .bg-gray-700 { background: white !important; border: 1px solid #000 !important; color: black !important; } table { border-collapse: collapse !important; } td, th { border: 1px solid #000 !important; } }"
 }

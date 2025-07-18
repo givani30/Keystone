@@ -16,5 +16,6 @@
   "color_variants": {
     "blue": { "header": "bg-blue-50 text-blue-700", "accent": "text-blue-600" },
     "purple": { "header": "bg-purple-50 text-purple-700", "accent": "text-purple-600" }
-  }
+  },
+  "print_styles": "@media print { * { box-shadow: none !important; text-shadow: none !important; } body { background: white !important; color: black !important; font-size: 10pt; } .container { max-width: none !important; margin: 0 !important; padding: 0.5cm !important; } .grid { display: block !important; } .card, .bg-white, .bg-gray-50, .bg-blue-50, .bg-purple-50 { background: white !important; border: 1px solid #000 !important; page-break-inside: avoid; margin-bottom: 0.5cm; } .card-header, .bg-blue-50, .bg-purple-50 { background: white !important; border-bottom: 1px solid #000 !important; } .text-gray-600, .text-gray-500, .text-blue-600, .text-purple-600, .text-blue-700, .text-purple-700 { color: #333 !important; } .border-gray-100, .border-gray-300, .border-b { border-color: #000 !important; } .keybind-key, .bg-gray-200 { background: white !important; border: 1px solid #000 !important; color: black !important; } table { border-collapse: collapse !important; } td, th { border: 1px solid #000 !important; } }"
 }

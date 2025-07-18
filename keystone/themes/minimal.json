@@ -16,5 +16,6 @@
   "color_variants": {
     "blue": { "header": "text-blue-700", "accent": "text-blue-600" },
     "purple": { "header": "text-purple-700", "accent": "text-purple-600" }
-  }
+  },
+  "print_styles": "@media print { * { box-shadow: none !important; text-shadow: none !important; } body { background: white !important; color: black !important; font-size: 10pt; } .container { max-width: none !important; margin: 0 !important; padding: 0.5cm !important; } .card { page-break-inside: avoid; margin-bottom: 0.5cm; border-bottom: 2px solid #000 !important; } .text-blue-700, .text-purple-700, .text-blue-600, .text-purple-600 { color: #333 !important; } table { border-collapse: collapse !important; } td, th { border: 1px solid #000 !important; } }"
 }

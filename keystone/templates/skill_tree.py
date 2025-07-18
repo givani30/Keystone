@@ -13,6 +13,9 @@ def generate_html(data: Dict[str, Any], theme: Dict[str, Any], icons: Dict[str, 
     Returns:
         Complete HTML document as a string
     """
+    # Get print styles from theme if available
+    print_styles = theme.get("print_styles", "")
+    
     # Generate the HTML structure
     html_content = f'''<!DOCTYPE html>
 <html lang="en">
@@ -29,6 +32,7 @@ def generate_html(data: Dict[str, Any], theme: Dict[str, Any], icons: Dict[str, 
             min-width: 1.5rem;
             text-align: center;
         }}
+        {print_styles}
     </style>
 </head>
 <body class="{theme["base_styles"]["body"]}">
