@@ -359,7 +359,7 @@
         "dependencies": [
           7
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -367,7 +367,7 @@
             "description": "Enhance the theme loader to detect if a theme specifies an 'inherits_from' key and recursively load all base themes in the inheritance chain before loading the current theme.",
             "dependencies": [],
             "details": "Modify the load_theme function in keystone/utils/theme_loader.py to check for the 'inherits_from' key in the theme file. If present, recursively load the specified base theme(s) before loading the current theme, ensuring that infinite loops are avoided (e.g., by tracking visited themes).",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -378,7 +378,7 @@
               1
             ],
             "details": "After recursively loading all base themes, perform a deep merge where the current theme's values override those from the base theme(s). Ensure that nested dictionaries are merged rather than replaced, preserving all non-overridden values.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -389,7 +389,7 @@
               2
             ],
             "details": "When merging the 'color_variants' dictionary, ensure that only the explicitly defined colors in the current theme override the base theme, while all other color variants from the base theme are retained.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -400,7 +400,7 @@
               3
             ],
             "details": "Write tests that load a derived theme (e.g., dark.json) inheriting from a base theme (e.g., default.json), overriding some values and color variants. Assert that the resulting theme contains all inherited values, correctly overridden values, and properly merged color variants.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -703,7 +703,7 @@
     ],
     "metadata": {
       "created": "2025-07-18T10:22:32.244Z",
-      "updated": "2025-07-18T11:28:44.525Z",
+      "updated": "2025-07-18T11:34:56.042Z",
       "description": "Tasks for master context"
     }
   }
