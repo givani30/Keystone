@@ -244,6 +244,11 @@ pdf = [
     { name = "weasyprint" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "weasyprint" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "black", marker = "extra == 'dev'" },
@@ -254,6 +259,9 @@ requires-dist = [
     { name = "weasyprint", marker = "extra == 'pdf'", specifier = ">=60.0" },
 ]
 provides-extras = ["pdf", "dev"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "weasyprint", specifier = ">=65.1" }]
 
 [[package]]
 name = "mypy"

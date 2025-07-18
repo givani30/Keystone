@@ -1,5 +1,6 @@
 import argparse
 import sys
+import importlib
 from pathlib import Path
 from typing import Dict, Any
 
@@ -7,7 +8,6 @@ from .core.layout_parser import parse_layout
 from .core.validator import validate_references
 from .utils.theme_loader import load_theme, load_icons
 from .utils.pdf_generator import generate_pdf
-from .templates.skill_tree import generate_html
 
 
 def main():
@@ -33,7 +33,8 @@ Examples:
     # Optional arguments
     parser.add_argument(
         "--template", 
-        help="Override the template specified in the layout file"
+        choices=["skill_tree", "reference_card"],
+        help="Override the template specified in the layout file (choices: skill_tree, reference_card)"
     )
     parser.add_argument(
         "--theme", 
@@ -106,12 +107,21 @@ Examples:
             print(f"Error: {error_message}", file=sys.stderr)
             return 1
         
-        # Generate HTML (only skill_tree template for now)
+        # Generate HTML using dynamically imported template
         template_name = args.template or layout_data.get("template", "skill_tree")
-        if template_name != "skill_tree":
-            print(f"Error: Template '{template_name}' not yet implemented. Only 'skill_tree' is available.", file=sys.stderr)
+        
+        try:
+            # Dynamically import the template module
+            template_module = importlib.import_module(f"keystone.templates.{template_name}")
+            generate_html = template_module.generate_html
+        except ImportError:
+            print(f"Error: Template '{template_name}' not found. Available templates: skill_tree, reference_card", file=sys.stderr)
+            return 1
+        except AttributeError:
+            print(f"Error: Template '{template_name}' does not have a generate_html function.", file=sys.stderr)
             return 1
             
+        print(f"Using template: {template_name}")
         print("Generating HTML...")
         html_content = generate_html(layout_data, theme, icons)
         

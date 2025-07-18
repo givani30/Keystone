@@ -463,7 +463,7 @@
           11,
           12
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -471,7 +471,7 @@
             "description": "Extend the CLI's argument parser to accept --template and --theme flags. The --template flag should have choices such as 'skill_tree' and 'reference_card', and --theme should accept a string for the theme name. Ensure these arguments are parsed and validated using argparse.",
             "dependencies": [],
             "details": "Modify keystone/main.py to add the new arguments using argparse's add_argument method. Use the 'choices' parameter for --template to restrict valid options. Ensure the parsed arguments are accessible for subsequent logic.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -482,7 +482,7 @@
               1
             ],
             "details": "Use Python's importlib to import the module (e.g., keystone.templates.skill_tree or keystone.templates.reference_card) at runtime. Call the generate_html function from the selected module, passing the required data.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -493,7 +493,7 @@
               1
             ],
             "details": "Update the CLI logic to pass the theme argument to the theme loading function (e.g., load_theme(theme_name)). Ensure the loaded theme is then provided to the template's generate_html function.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -506,7 +506,7 @@
               3
             ],
             "details": "Automate CLI invocations (e.g., using subprocess in pytest) for all valid combinations of template and theme flags. Assert that the output files are generated and styled as expected. Include tests for invalid combinations to ensure proper error messages.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -703,7 +703,7 @@
     ],
     "metadata": {
       "created": "2025-07-18T10:22:32.244Z",
-      "updated": "2025-07-18T12:04:29.124Z",
+      "updated": "2025-07-18T12:26:56.474Z",
       "description": "Tasks for master context"
     }
   }

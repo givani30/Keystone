@@ -82,14 +82,23 @@ class TestMainCLI:
     
     def run_cli(self, args, cwd=None):
         """Helper to run the CLI and capture output."""
-        cmd = [sys.executable, "-m", "keystone.main"] + args
+        # Set the project root and add to PYTHONPATH
+        project_root = Path(__file__).parent.parent.parent
+        
+        # Get current environment and add PYTHONPATH
+        import os
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(project_root)
+        
+        cmd = [sys.executable, "-m", "keystone"] + args
         try:
             result = subprocess.run(
                 cmd,
                 capture_output=True,
                 text=True,
-                cwd=cwd,
-                timeout=30
+                cwd=cwd or project_root,
+                timeout=30,
+                env=env
             )
             return result.returncode, result.stdout, result.stderr
         except subprocess.TimeoutExpired:
@@ -169,15 +178,29 @@ class TestMainCLI:
         assert returncode == 0
         assert "Using theme: dark" in stdout
     
-    def test_template_override_error(self, sample_layout, temp_dir):
-        """Test template override with unsupported template."""
+    def test_template_override_reference_card(self, sample_layout, temp_dir):
+        """Test template override with reference_card template."""
         returncode, stdout, stderr = self.run_cli([
             str(sample_layout),
             "--template", "reference_card"
         ], cwd=temp_dir)
         
-        assert returncode == 1
-        assert "Template 'reference_card' not yet implemented" in stderr
+        if returncode != 0:
+            print(f"STDOUT: {stdout}")
+            print(f"STDERR: {stderr}")
+        
+        assert returncode == 0
+        assert "Using template: reference_card" in stdout
+        assert "Generated HTML:" in stdout
+        
+        # Check that output file was created
+        output_file = temp_dir / "test_output.html"
+        assert output_file.exists()
+        
+        # Check content contains template-specific elements
+        content = output_file.read_text()
+        assert "Test Cheatsheet" in content
+        assert "Reference Card" in content or "reference" in content.lower()
     
     def test_pdf_format_generation(self, sample_layout, temp_dir):
         """Test PDF format generates PDF file."""
@@ -307,3 +330,185 @@ class TestMainCLI:
         finally:
             # Restore permissions for cleanup
             restricted_dir.chmod(0o755)
+    
+    # New comprehensive tests for template and theme combinations
+    
+    def test_skill_tree_template_with_default_theme(self, sample_layout, temp_dir):
+        """Test skill_tree template with default theme."""
+        returncode, stdout, stderr = self.run_cli([
+            str(sample_layout),
+            "--template", "skill_tree",
+            "--theme", "default"
+        ], cwd=temp_dir)
+        
+        assert returncode == 0
+        assert "Using template: skill_tree" in stdout
+        assert "Using theme: default" in stdout
+        assert "Generated HTML:" in stdout
+        
+        output_file = temp_dir / "test_output.html"
+        assert output_file.exists()
+    
+    def test_skill_tree_template_with_dark_theme(self, sample_layout, temp_dir):
+        """Test skill_tree template with dark theme.""" 
+        returncode, stdout, stderr = self.run_cli([
+            str(sample_layout),
+            "--template", "skill_tree",
+            "--theme", "dark"
+        ], cwd=temp_dir)
+        
+        assert returncode == 0
+        assert "Using template: skill_tree" in stdout
+        assert "Using theme: dark" in stdout
+        
+        output_file = temp_dir / "test_output.html"
+        assert output_file.exists()
+    
+    def test_reference_card_template_with_default_theme(self, sample_layout, temp_dir):
+        """Test reference_card template with default theme."""
+        returncode, stdout, stderr = self.run_cli([
+            str(sample_layout),
+            "--template", "reference_card",
+            "--theme", "default"
+        ], cwd=temp_dir)
+        
+        if returncode != 0:
+            print(f"STDOUT: {stdout}")
+            print(f"STDERR: {stderr}")
+        
+        assert returncode == 0
+        assert "Using template: reference_card" in stdout
+        assert "Using theme: default" in stdout
+        
+        output_file = temp_dir / "test_output.html"
+        assert output_file.exists()
+    
+    def test_reference_card_template_with_minimal_theme(self, sample_layout, temp_dir):
+        """Test reference_card template with minimal theme."""
+        returncode, stdout, stderr = self.run_cli([
+            str(sample_layout),
+            "--template", "reference_card", 
+            "--theme", "minimal"
+        ], cwd=temp_dir)
+        
+        assert returncode == 0
+        assert "Using template: reference_card" in stdout
+        assert "Using theme: minimal" in stdout
+        
+        output_file = temp_dir / "test_output.html"
+        assert output_file.exists()
+    
+    def test_all_template_theme_combinations_with_pdf(self, sample_layout, temp_dir):
+        """Test all template and theme combinations with PDF output."""
+        templates = ["skill_tree", "reference_card"]
+        themes = ["default", "dark", "minimal", "dark_simple"]
+        
+        for template in templates:
+            for theme in themes:
+                output_name = f"test_{template}_{theme}"
+                
+                returncode, stdout, stderr = self.run_cli([
+                    str(sample_layout),
+                    "--template", template,
+                    "--theme", theme,
+                    "--format", "both",
+                    "--output", output_name
+                ], cwd=temp_dir)
+                
+                if returncode != 0:
+                    print(f"Failed for template={template}, theme={theme}")
+                    print(f"STDOUT: {stdout}")
+                    print(f"STDERR: {stderr}")
+                
+                assert returncode == 0
+                assert f"Using template: {template}" in stdout
+                assert f"Using theme: {theme}" in stdout
+                assert "Generated HTML:" in stdout
+                assert "Generated PDF:" in stdout
+                
+                # Check both files were created
+                html_file = temp_dir / f"{output_name}.html"
+                pdf_file = temp_dir / f"{output_name}.pdf"
+                assert html_file.exists(), f"HTML file missing for {template}/{theme}"
+                assert pdf_file.exists(), f"PDF file missing for {template}/{theme}"
+    
+    def test_template_theme_override_layout_file(self, temp_dir):
+        """Test that CLI flags override template and theme specified in layout file."""
+        # Create layout with specific template and theme
+        layout_data = {
+            "title": "Override Test",
+            "template": "skill_tree",  # Will be overridden
+            "theme": "default",        # Will be overridden
+            "output_name": "override_test",
+            "categories": [
+                {
+                    "name": "Test Category",
+                    "keybinds": [
+                        {
+                            "action": "Test Action",
+                            "keys": "Ctrl+T",
+                            "description": "Test description"
+                        }
+                    ]
+                }
+            ]
+        }
+        
+        layout_file = temp_dir / "override_layout.yml"
+        with open(layout_file, 'w') as f:
+            yaml.dump(layout_data, f)
+        
+        # Test that CLI overrides take precedence
+        returncode, stdout, stderr = self.run_cli([
+            str(layout_file),
+            "--template", "reference_card",  # Override layout file
+            "--theme", "dark"                # Override layout file
+        ], cwd=temp_dir)
+        
+        assert returncode == 0
+        assert "Using template: reference_card" in stdout
+        assert "Using theme: dark" in stdout
+        
+        output_file = temp_dir / "override_test.html"
+        assert output_file.exists()
+    
+    def test_invalid_template_choice_error(self, sample_layout, temp_dir):
+        """Test error handling for invalid template choice."""
+        returncode, stdout, stderr = self.run_cli([
+            str(sample_layout),
+            "--template", "invalid_template"
+        ], cwd=temp_dir)
+        
+        # Should fail at argument parsing level
+        assert returncode == 2
+        assert "invalid choice" in stderr
+        assert "choose from 'skill_tree', 'reference_card'" in stderr
+    
+    def test_complex_flag_combination(self, sample_layout, temp_dir):
+        """Test complex combination of all flags together."""
+        custom_output = temp_dir / "complex" / "nested" / "output.html"
+        
+        returncode, stdout, stderr = self.run_cli([
+            str(sample_layout),
+            "--template", "reference_card",
+            "--theme", "dark_simple", 
+            "--format", "both",
+            "--output", str(custom_output)
+        ], cwd=temp_dir)
+        
+        if returncode != 0:
+            print(f"STDOUT: {stdout}")
+            print(f"STDERR: {stderr}")
+        
+        assert returncode == 0
+        assert "Using template: reference_card" in stdout
+        assert "Using theme: dark_simple" in stdout
+        assert "Generated HTML:" in stdout
+        assert "Generated PDF:" in stdout
+        
+        # Check files were created in nested directory
+        assert custom_output.exists()
+        
+        # When output has .html extension, PDF gets _pdf suffix 
+        pdf_output = custom_output.parent / f"{custom_output.stem}_pdf.pdf"
+        assert pdf_output.exists()

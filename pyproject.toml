@@ -12,3 +12,8 @@ dev = ["pytest", "black", "mypy"]
 
 [project.scripts]
 keystone = "keystone.main:main"
+
+[dependency-groups]
+dev = [
+    "weasyprint>=65.1",
+]
