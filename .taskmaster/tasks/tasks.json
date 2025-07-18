@@ -1,0 +1,272 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Project Setup and Dependency Management",
+        "description": "Set up the project structure, `pyproject.toml` file, and define core vs. optional dependencies as specified in the PRD. This establishes the foundation for all subsequent development.",
+        "details": "Create the directory structure outlined in the PRD (`keystone/`, `keystone/core/`, etc.). Initialize a `pyproject.toml` file. Under `[project]`, add `dependencies = [\"pyyaml\", \"jsonschema\"]`. Under `[project.optional-dependencies]`, add `pdf = [\"weasyprint>=60.0\"]` and `dev = [\"pytest\", \"black\", \"mypy\"]`. Create empty `__init__.py` files where necessary to define Python packages.",
+        "testStrategy": "Verify the project structure is correct. Run `pip install .` and `pip install .[pdf]` to ensure dependencies are installed correctly. Check that the package is recognized by pip.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 2,
+        "title": "Define JSON Schemas for Data and Layout",
+        "description": "Define the JSON schemas for validating keybind data files and layout configuration files. These schemas are critical for ensuring data integrity and providing clear validation errors.",
+        "details": "Create two files: `keystone/assets/schemas/data_schema.json` and `keystone/assets/schemas/layout_schema.json`. For `data_schema.json`, define fields like `tool`, `version`, and `categories`, ensuring the `keys` property can accept either a string or an array of strings. For `layout_schema.json`, define fields like `title`, `template`, `theme`, `categories`, and `sources` according to the PRD example.",
+        "testStrategy": "Manually review the schemas against the PRD examples. Create valid and invalid JSON/YAML example files and prepare them for use in testing the validator module in the next step.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 3,
+        "title": "Implement Schema Validator Module",
+        "description": "Implement a validation module that uses the `jsonschema` library to validate input data against the defined schemas.",
+        "details": "In `keystone/core/validator.py`, create functions like `validate_data(data)` and `validate_layout(data)`. These functions will load the corresponding schema JSON from `keystone/assets/schemas/` and use `jsonschema.validate()` to check the input data. The functions should raise a `jsonschema.ValidationError` on failure.",
+        "testStrategy": "Write unit tests using `pytest`. Test the validator functions with valid data files to ensure they pass without errors. Test with invalid data (e.g., missing required fields, wrong data types) to ensure they raise `ValidationError` with informative messages.",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 4,
+        "title": "Implement YAML Layout Parser",
+        "description": "Create a module responsible for loading and parsing the YAML layout configuration file. This module will orchestrate the data aggregation process.",
+        "details": "In `keystone/core/layout_parser.py`, create a function that accepts a path to a YAML file. Use the `pyyaml` library to load and parse the file content. After parsing, use the validator from Task 3 to validate the loaded layout data. This module will initially just parse the layout file; data source loading will be added later.",
+        "testStrategy": "Unit test the parser with a valid `layout.yml` file, ensuring the output is a correctly structured Python dictionary. Test with a malformed YAML file to check for `yaml.YAMLError`. Test with a structurally invalid layout to ensure the validator (from Task 3) is called and raises an exception.",
+        "priority": "high",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 5,
+        "title": "Implement Keybind Data Loader",
+        "description": "Implement the logic for loading keybind data from tool-specific JSON source files specified in the layout configuration.",
+        "details": "In `keystone/core/data_loader.py`, create a function `load_keybind_source(file_path)`. This function will read a JSON file, parse it, and then use the `validator.py` module to validate it against `data_schema.json`. It should return the parsed and validated data as a Python dictionary.",
+        "testStrategy": "Unit test the data loader with valid and invalid keybind JSON files. Ensure it correctly parses valid files and raises appropriate validation errors for invalid ones. Test file not found scenarios.",
+        "priority": "high",
+        "dependencies": [
+          3
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 6,
+        "title": "Implement Data Merging Logic",
+        "description": "Implement the data merging logic that combines keybinds from multiple sources and inline definitions according to the specified priority rules.",
+        "details": "Enhance `keystone/core/layout_parser.py`. After parsing the layout file, iterate through the categories and their sources. For each source, call the `data_loader.py` module. Implement the merging logic: a simple override where inline keybinds have the highest priority, followed by keybinds from source files in the order they are listed. The result should be a single, consolidated data structure representing the entire cheatsheet content.",
+        "testStrategy": "Write integration tests for the merging logic. Create a layout file with multiple sources and inline keybinds that have conflicting actions. Verify that the final merged data correctly reflects the override rules (inline > first source > second source).",
+        "priority": "high",
+        "dependencies": [
+          4,
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 7,
+        "title": "Create and Load Theme and Icon Manifests",
+        "description": "Create the manifest files for icons and theme colors, and implement a loader that can parse them.",
+        "details": "Create `keystone/assets/icons.json` with a few sample Heroicons as specified. Create `keystone/themes/default.json` with the structure from the PRD (base_styles, card_styles, keybind_styles, color_variants). In `keystone/utils/theme_loader.py`, create a function `load_theme(theme_name)` that reads the corresponding JSON file. Also create a function to load `icons.json`. For now, theme inheritance is not needed.",
+        "testStrategy": "Unit test the `theme_loader` to ensure it correctly loads and parses `default.json` and `icons.json`. Verify that accessing keys like `theme['base_styles']['body']` returns the expected string of CSS classes.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "Implement 'Skill Tree' HTML Template",
+        "description": "Implement the 'Skill Tree' template, which generates HTML output based on the merged data and a loaded theme.",
+        "details": "In `keystone/templates/skill_tree.py`, create a main function `generate_html(data, theme, icons)`. This function will construct the final HTML document as a string. Use f-strings for templating. It should dynamically generate category cards, applying CSS classes from the `theme` dictionary. For example, a card header's class would be `f'{theme[\"card_styles\"][\"card_header\"]} {theme[\"color_variants\"][category_color][\"header\"]}'`. Embed the icon SVG from the `icons` dictionary.",
+        "testStrategy": "Write unit tests that pass mock data and theme objects to the `generate_html` function. Assert that the output HTML string contains the expected elements, classes, and content. Perform a visual inspection of the generated HTML file in a browser to ensure it renders correctly.",
+        "priority": "high",
+        "dependencies": [
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Implement Basic CLI with `argparse`",
+        "description": "Create the main CLI entry point using `argparse`. This initial version will handle taking a layout file and generating an HTML output.",
+        "details": "In `keystone/main.py`, use Python's `argparse` module to create a command-line parser. Define a required positional argument for the layout file path and an optional `--output` argument. The main function will call the layout parser (Task 6), the theme loader (Task 7), and the skill tree template (Task 8) to generate the HTML, then write it to the specified output file or a default `output.html`.",
+        "testStrategy": "Perform end-to-end testing from the command line. Run `python -m keystone my_layout.yml --output test.html`. Verify that `test.html` is created and contains the expected content. Test edge cases like file not found for the layout file.",
+        "priority": "high",
+        "dependencies": [
+          6,
+          8
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "Implement PDF Generation with WeasyPrint",
+        "description": "Implement the PDF generation capability using `weasyprint`, including graceful error handling if the dependency is not installed.",
+        "details": "In `keystone/utils/pdf_generator.py`, create a function `generate_pdf(html_content, output_path)`. Use a `try-except ImportError` block to check for `weasyprint`. If it's not found, print the specified error message to stderr and exit gracefully. If it is found, use `weasyprint.HTML(string=html_content).write_pdf(output_path)`. Update `keystone/main.py` to add a `--format` argument (`html`, `pdf`, `both`) and call this new function when appropriate.",
+        "testStrategy": "Test in two environments: one with `weasyprint` installed and one without. With it installed, verify a PDF is correctly generated. Without it, run the command with `--format pdf` and assert that the specific error message is printed and no PDF is created.",
+        "priority": "medium",
+        "dependencies": [
+          9
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 11,
+        "title": "Implement Theme System with Inheritance",
+        "description": "Enhance the theme loader to support inheritance, allowing custom themes to extend base themes and override specific values.",
+        "details": "In `keystone/utils/theme_loader.py`, modify the `load_theme` function. If a theme file contains an `inherits_from` key, first recursively load the base theme. Then, perform a deep merge of the custom theme's values over the base theme's values. The `color_variants` should be merged, not replaced. This allows a user to override just one color, for example.",
+        "testStrategy": "Create a `dark.json` theme that inherits from `default.json` and overrides some colors. Write unit tests to load `dark.json` and assert that it contains both the inherited values from `default.json` and its own overridden values.",
+        "priority": "medium",
+        "dependencies": [
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 12,
+        "title": "Implement 'Reference Card' Template",
+        "description": "Implement the 'Reference Card' template, providing a dense, table-based layout as an alternative to the 'Skill Tree'.",
+        "details": "Create `keystone/templates/reference_card.py`. Similar to the skill tree template, it will have a `generate_html(data, theme, icons)` function. This function will generate HTML using `<table>` elements to create a dense layout. It should still use the theme dictionary for styling table headers, rows, and key styles to maintain consistency.",
+        "testStrategy": "Unit test the template function with mock data. Visually inspect the generated HTML to ensure it's a clean, readable table layout. Update the main CLI (Task 9) to accept a `--template` argument and test generating a cheatsheet with this new template.",
+        "priority": "medium",
+        "dependencies": [
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 13,
+        "title": "Enhance CLI for Template and Theme Selection",
+        "description": "Expand the CLI to allow users to select templates and themes, and to control output formats more granularly.",
+        "details": "In `keystone/main.py`, add `--template` and `--theme` arguments to the `argparse` setup. The `--template` argument should have choices like `skill_tree` and `reference_card`. The CLI logic will dynamically import and call the correct template module based on this flag. The `--theme` flag will be passed to the theme loader.",
+        "testStrategy": "Run end-to-end tests from the command line, combining the new flags. For example: `python -m keystone layout.yml --template reference_card --theme dark --format pdf`. Verify the output file uses the correct template and theme styling.",
+        "priority": "medium",
+        "dependencies": [
+          9,
+          11,
+          12
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 14,
+        "title": "Implement 'pick_category' Data Filtering",
+        "description": "Implement advanced data composition features, allowing users to pick specific categories from source files.",
+        "details": "In `keystone/core/layout_parser.py`, enhance the source processing logic. When a source entry in the layout file includes a `pick_category` key (which can be a string or a list of strings), filter the data loaded from that source file to include only the specified categories before merging.",
+        "testStrategy": "Create a test layout file that uses `pick_category` to select a subset of categories from a larger data file. Run the generator and assert that the final output contains only the picked categories and not the others from that source file.",
+        "priority": "medium",
+        "dependencies": [
+          6
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 15,
+        "title": "Implement Config File Auto-Discovery",
+        "description": "Implement auto-discovery of layout configuration files, so the tool can be run from anywhere in a project directory without specifying the file path.",
+        "details": "Create `keystone/utils/discovery.py`. Implement a function `find_layout_file()` that checks the current directory (and parent directories up to a certain limit) for `keystone.yml`, `layout.yml`, or `.keystone.yml`. In `keystone/main.py`, if no layout file is provided as an argument, call this discovery function. If no file is found, print an error and exit.",
+        "testStrategy": "Create a directory with a `layout.yml` file. `cd` into that directory and run `python -m keystone`. Verify it finds and processes the file. Test from a subdirectory as well. Test in a directory with no config file to ensure the error message is shown.",
+        "priority": "low",
+        "dependencies": [
+          9
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 16,
+        "title": "Implement Advanced CLI Helper Commands",
+        "description": "Add helper commands to the CLI for validation, initialization, and listing available resources.",
+        "details": "In `keystone/main.py`, add the following arguments: `--validate` (runs validation and exits), `--init` (creates example layout and data files in the current directory), and `--list-themes` (scans the `keystone/themes` directory and prints the names of available themes).",
+        "testStrategy": "Test each command individually. Run with `--validate` on valid and invalid files. Run `--init` and check that the example files are created. Run `--list-themes` and verify the output matches the theme files present.",
+        "priority": "low",
+        "dependencies": [
+          13
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 17,
+        "title": "Implement Icon and Theme Color Reference Validation",
+        "description": "Improve validation by checking that `theme_color` and `icon_name` values in the layout file exist in their respective manifests.",
+        "details": "In `keystone/core/validator.py`, create a new validation function that runs after the initial schema validation. This function will take the parsed layout, loaded themes, and loaded icons. It will iterate through the layout's categories and check if `category.theme_color` is a valid key in `theme['color_variants']` and `category.icon_name` is a valid key in the icons dictionary. Provide clear error messages for mismatches.",
+        "testStrategy": "Create a layout file with an invalid `theme_color` (e.g., 'orange') and another with an invalid `icon_name`. Run the tool and assert that it fails with a specific error message, like 'Error: Theme color \"orange\" not found in theme \"default\".' or 'Error: Icon \"invalid_icon\" not found.'",
+        "priority": "medium",
+        "dependencies": [
+          3,
+          7
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 18,
+        "title": "Add Print-Specific CSS (@media print)",
+        "description": "Add print-specific CSS to themes to optimize the generated HTML and PDF for A4 printing.",
+        "details": "This is a content task. Modify the theme JSON files (e.g., `default.json`). Add a new key, `print_styles`, containing a string of CSS rules wrapped in an `@media print { ... }` block. This CSS should remove shadows, ensure text is black, control page breaks (`page-break-inside: avoid` on cards), and set appropriate margins. The core generator will embed this CSS block into the `<style>` tag of the HTML output.",
+        "testStrategy": "Generate an HTML file. Open it in a browser and use the Print Preview feature. Verify that the print-specific styles are applied (e.g., no box shadows, different layout if specified). Check the generated PDF to ensure it also respects these print styles.",
+        "priority": "low",
+        "dependencies": [
+          11
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 19,
+        "title": "Implement Responsive CSS for Grid Layouts",
+        "description": "Ensure the CSS in the themes produces a responsive layout, particularly for the 'Skill Tree' template.",
+        "details": "This is a content task. Review and update the CSS classes in the theme JSON files. For the 'Skill Tree' layout, use CSS Grid (`display: grid`). Define `grid-template-columns` with responsive breakpoints (e.g., `repeat(auto-fill, minmax(300px, 1fr))`) to automatically adjust the number of columns from 1 to 4 based on screen width.",
+        "testStrategy": "Generate an HTML file with the 'Skill Tree' template. Open it in a browser and use the developer tools to simulate different screen sizes (mobile, tablet, desktop). Verify that the grid layout adjusts correctly and remains usable at all sizes.",
+        "priority": "low",
+        "dependencies": [
+          8
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 20,
+        "title": "Create Documentation and Finalize Example Generator",
+        "description": "Create comprehensive documentation and example files to guide users. Refine the `--init` command to generate a complete and useful starting project.",
+        "details": "Write a `README.md` file explaining all features, CLI options, and the data/layout file formats. Create a set of high-quality example files (`my_workflow.yml`, `zellij.json`, `shell_essentials.json`) that showcase features like multiple sources, category picking, and inline overrides. Update the `--init` command to copy these polished examples into the user's current directory.",
+        "testStrategy": "Have a new user follow the `README.md` and use the `--init` command. Verify they can successfully generate a cheatsheet without further instruction. Review the generated documentation and examples for clarity and completeness.",
+        "priority": "low",
+        "dependencies": [
+          16
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-18T10:22:32.244Z",
+      "updated": "2025-07-18T10:22:32.245Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Minimal Theme",
+  "base_styles": {
+    "body": "font-sans",
+    "container": "mx-auto p-4"
+  },
+  "card_styles": {
+    "card": "border-b-2",
+    "card_header": "font-bold text-lg",
+    "card_body": "p-2"
+  },
+  "keybind_styles": {
+    "key": "font-mono",
+    "key_group": ""
+  },
+  "color_variants": {
+    "blue": { "header": "text-blue-700", "accent": "text-blue-600" },
+    "purple": { "header": "text-purple-700", "accent": "text-purple-600" }
+  }
+}

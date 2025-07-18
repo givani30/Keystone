@@ -1,0 +1,11 @@
+pyyaml
+jsonschema
+
+[dev]
+pytest
+black
+mypy
+flake8
+
+[pdf]
+weasyprint>=60.0

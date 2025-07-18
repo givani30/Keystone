@@ -1,0 +1,11 @@
+[project]
+name = "keystone"
+version = "0.1.0"
+dependencies = [
+    "pyyaml",
+    "jsonschema",
+]
+
+[project.optional-dependencies]
+pdf = ["weasyprint>=60.0"]
+dev = ["pytest", "black", "mypy"]

@@ -1,0 +1,20 @@
+{
+  "name": "Default Theme",
+  "base_styles": {
+    "body": "bg-gray-50 text-gray-800 font-inter",
+    "container": "mx-auto p-4 sm:p-6 lg:p-8"
+  },
+  "card_styles": {
+    "card": "bg-white rounded-xl border shadow-md hover:shadow-lg transition-all",
+    "card_header": "flex items-center gap-3 p-4 border-b",
+    "card_body": "p-6"
+  },
+  "keybind_styles": {
+    "key": "bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold",
+    "key_group": "inline-flex items-center gap-1"
+  },
+  "color_variants": {
+    "blue": { "header": "bg-blue-50 text-blue-700", "accent": "text-blue-600" },
+    "purple": { "header": "bg-purple-50 text-purple-700", "accent": "text-purple-600" }
+  }
+}

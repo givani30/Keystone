@@ -1,0 +1,2 @@
+[console_scripts]
+keystone = keystone.main:main

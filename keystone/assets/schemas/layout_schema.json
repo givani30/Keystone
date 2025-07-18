@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Keystone Layout Schema",
+  "description": "Schema for the layout configuration file.",
+  "type": "object",
+  "properties": {
+    "title": {
+      "description": "The title of the cheatsheet.",
+      "type": "string"
+    },
+    "subtitle": {
+      "description": "The subtitle of the cheatsheet.",
+      "type": "string"
+    },
+    "template": {
+      "description": "The template to use for rendering.",
+      "type": "string"
+    },
+    "theme": {
+      "description": "The theme to use for styling.",
+      "type": "string"
+    },
+    "output_name": {
+      "description": "The base name for the output files.",
+      "type": "string"
+    },
+    "categories": {
+      "description": "A list of categories to display.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the category.",
+            "type": "string"
+          },
+          "theme_color": {
+            "description": "The theme color for this category.",
+            "type": "string"
+          },
+          "icon_name": {
+            "description": "The name of the icon for this category.",
+            "type": "string"
+          },
+          "sources": {
+            "description": "A list of data sources for this category.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "file": {
+                  "description": "The path to the data file.",
+                  "type": "string"
+                },
+                "pick_category": {
+                  "description": "The category or categories to pick from the data file.",
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": ["file"]
+            }
+          },
+          "keybinds": {
+            "description": "A list of inline keybinds for this category.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/keybind"
+            }
+          }
+        },
+        "required": ["name"]
+      }
+    }
+  },
+  "required": ["title", "template", "theme", "output_name", "categories"],
+  "definitions": {
+    "keybind": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "description": "The action the keybind performs.",
+          "type": "string"
+        },
+        "keys": {
+          "description": "The key or keys for the action.",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "description": {
+          "description": "A description of the action.",
+          "type": "string"
+        }
+      },
+      "required": ["action", "keys"]
+    }
+  }
+}

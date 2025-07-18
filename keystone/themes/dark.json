@@ -1,0 +1,10 @@
+{
+  "name": "My Custom Dark",
+  "inherits_from": "dark",
+  "color_variants": {
+    "blue": {
+      "header": "bg-blue-900 text-blue-100",
+      "accent": "text-blue-400"
+    }
+  }
+}
