@@ -9,7 +9,7 @@
         "testStrategy": "Verify the project structure is correct. Run `pip install .` and `pip install .[pdf]` to ensure dependencies are installed correctly. Check that the package is recognized by pip.",
         "priority": "high",
         "dependencies": [],
-        "status": "pending",
+        "status": "done",
         "subtasks": []
       },
       {
@@ -22,7 +22,7 @@
         "dependencies": [
           1
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": []
       },
       {
@@ -35,7 +35,7 @@
         "dependencies": [
           2
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": []
       },
       {
@@ -265,7 +265,7 @@
     ],
     "metadata": {
       "created": "2025-07-18T10:22:32.244Z",
-      "updated": "2025-07-18T10:22:32.245Z",
+      "updated": "2025-07-18T10:26:33.011Z",
       "description": "Tasks for master context"
     }
   }

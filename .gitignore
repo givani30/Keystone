@@ -1,25 +1,137 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-dev-debug.log
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Dependency directories
-node_modules/
+# C extensions
+*.so
 
-# Environment variables
+# Distribution / packaging
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are created by a PyInstaller script from a source file
+#  out of the project PyInstaller builds a single file executable or directory
+#  that includes multiple files.
+#
+#  Rather than explicitly listing PyInstaller's files which are subject to change
+#  and vary between platforms, it will be simpler to ignore the out directories
+#  in the project's root directory.
+#
+#  So, if you do something like:
+#  pyinstaller --onefile --icon=icon.ico --add-data=./assets/*;assets/ my_flet_app.py
+#
+#  Then your .gitignore file will be:
+#  /dist
+#  /build
+#
+#  Or if you do something like:
+#  pyinstaller --onedir --icon=icon.ico --add-data=./assets/*;assets/ my_flet_app.py
+#
+#  Then your .gitignore file will be:
+#  /dist
+#  /build
+#
+
+# Flask stuff: see https://flask.palletsprojects.com/en/2.2.x/config/
+instance/
+.webassets-cache
+
+# Scrapy stuff: see https://docs.scrapy.org/en/latest/topics/scrapyd.html
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   For a library or application, you probably want to ignore this, since files
+#   in this directory are specific to a developer's computer.
+#
+#   However, for projects that are deploying to a server, you probably want to
+#   track this file to manage the Python version of the server.
+.python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock
+#   in version control. But in case of collaboration, if having platform-specific
+#   dependencies causes problems, ignoring this file may be a good decision.
+#Pipfile.lock
+
+# PEP 582; see https://www.python.org/dev/peps/pep-0582/
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
 .env
+.venv
+env/
+venv/
+ENV/
+env.bak
+venv.bak
 
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Spyder project settings
+.spyderproject
+.spyproject
 
-# OS specific
-.DS_Store
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file., 
+#  For a more complete list of files to ignore, you can refer to https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+.idea/
+
+# VS Code
+.vscode/
