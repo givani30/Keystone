@@ -1,4 +1,5 @@
 {
+  "tool": "tmux",
   "categories": [
     {
       "name": "sessions",

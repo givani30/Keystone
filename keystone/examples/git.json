@@ -1,4 +1,5 @@
 {
+  "tool": "Git",
   "categories": [
     {
       "name": "repository basics",

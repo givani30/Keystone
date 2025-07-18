@@ -36,7 +36,7 @@ categories:
 
   - name: "Version Control"
     theme_color: "purple"
-    icon_name: "git"
+    icon_name: "wrench"
     sources:
       - file: "git.json"
         pick_category: "staging & commits"

@@ -671,7 +671,7 @@
         "dependencies": [
           11
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": []
       },
       {
@@ -684,7 +684,7 @@
         "dependencies": [
           8
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": []
       },
       {
@@ -697,13 +697,45 @@
         "dependencies": [
           16
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create High-Quality Example Files",
+            "description": "Create a set of polished example files (`my_workflow.yml`, `zellij.json`, `shell_essentials.json`) that showcase the tool's key features and serve as a starting point for new users.",
+            "dependencies": [],
+            "details": "The example files should demonstrate functionalities like using multiple data sources, picking specific categories, and applying inline overrides. The content should be well-structured and practical to guide users effectively.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Write Comprehensive README.md Documentation",
+            "description": "Author a detailed `README.md` file to serve as the primary user guide, explaining all features, CLI options, and the formats for data and layout files.",
+            "dependencies": [
+              1
+            ],
+            "details": "The documentation must be clear and easy for new users to follow. It should cover installation, usage, and advanced features, using the example files created in the previous subtask to illustrate concepts and workflows.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Refine `--init` Command Functionality",
+            "description": "Update the `--init` command to copy the polished example files into the user's current directory, creating a complete and useful starting project.",
+            "dependencies": [
+              1
+            ],
+            "details": "The command logic needs to be implemented to locate the packaged example files (`my_workflow.yml`, `zellij.json`, etc.) and copy them to the directory where the user runs the command. This provides an immediate, working example setup.",
+            "status": "done",
+            "testStrategy": ""
+          }
+        ]
       }
     ],
     "metadata": {
       "created": "2025-07-18T10:22:32.244Z",
-      "updated": "2025-07-18T13:02:57.780Z",
+      "updated": "2025-07-18T13:54:53.524Z",
       "description": "Tasks for master context"
     }
   }

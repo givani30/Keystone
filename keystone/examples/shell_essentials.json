@@ -1,4 +1,5 @@
 {
+  "tool": "Shell",
   "categories": [
     {
       "name": "file operations",

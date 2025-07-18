@@ -24,6 +24,7 @@ keystone/templates/tests/test_reference_card.py
 keystone/templates/tests/test_skill_tree.py
 keystone/tests/test_main_cli.py
 keystone/tests/test_pdf_generation.py
+keystone/tests/test_responsive_grid.py
 keystone/tests/test_theme_inheritance.py
 keystone/utils/discovery.py
 keystone/utils/pdf_generator.py

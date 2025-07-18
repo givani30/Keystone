@@ -114,23 +114,34 @@ The layout file defines how to combine data sources and generate your cheatsheet
 title: "My Development Workflow"
 template: skill_tree  # or "reference_card"
 theme: default
-output: my_cheatsheet.html
+output_name: my_cheatsheet  # Base name for output files
 
-# Multiple data sources
-data_sources:
-  - file: vim.json
-    pick_category: ["editing", "navigation"]  # Optional: filter categories
-  - file: tmux.json
-    pick_category: ["sessions", "windows"]
-  - file: git.json  # Include all categories
+# Define categories that combine multiple data sources
+categories:
+  - name: "Text Editing"
+    theme_color: "blue"         # Optional: theme color variant
+    icon_name: "terminal"       # Optional: icon reference
+    sources:                    # Optional: external data sources
+      - file: "vim.json"
+        pick_category: "editing"  # Pick specific category from source
+    keybinds:                   # Optional: inline keybinds (highest priority)
+      - action: "Save All"
+        keys: "Ctrl+Shift+S"
+        description: "Save all open files"
 
-# Optional: Inline keybinds (highest priority)
-inline_data:
-  - category: "Custom Shortcuts"
-    icon: "⚡"
-    keybinds:
-      - key: "Ctrl+Alt+T"
-        action: "Open Terminal"
+  - name: "Navigation"
+    theme_color: "purple"
+    icon_name: "grid"
+    sources:
+      - file: "vim.json"
+        pick_category: "navigation"
+
+  - name: "Custom Shortcuts"
+    theme_color: "blue"
+    icon_name: "terminal"
+    keybinds:                   # Pure inline category (no external sources)
+      - action: "Open Terminal"
+        keys: "Ctrl+Alt+T"
         description: "Quick terminal access"
 
 # Optional: Theme customization
@@ -155,30 +166,29 @@ Data files contain your keybind definitions:
 
 ```json
 {
+  "tool": "Vim",
   "categories": [
     {
-      "category": "Editing",
-      "icon": "✏️",
+      "name": "editing",
       "keybinds": [
         {
-          "key": "Ctrl+C",
           "action": "Copy",
+          "keys": "Ctrl+C",
           "description": "Copy selected text to clipboard"
         },
         {
-          "key": "Ctrl+V", 
           "action": "Paste",
+          "keys": "Ctrl+V",
           "description": "Paste text from clipboard"
         }
       ]
     },
     {
-      "category": "Navigation",
-      "icon": "🧭",
+      "name": "navigation",
       "keybinds": [
         {
-          "key": "Ctrl+F",
           "action": "Find",
+          "keys": "Ctrl+F",
           "description": "Open search dialog"
         }
       ]
@@ -250,46 +260,55 @@ theme_overrides:
 Pick specific categories from data sources:
 
 ```yaml
-data_sources:
-  - file: vim.json
-    pick_category: ["editing", "navigation"]  # Only these categories
-  - file: comprehensive_shortcuts.json
-    pick_category: ["essential"]  # Filter large files
+categories:
+  - name: "Essential Commands"
+    sources:
+      - file: "vim.json"
+        pick_category: "editing"  # Single category
+      - file: "comprehensive_shortcuts.json"  
+        pick_category: ["essential", "basic"]  # Multiple categories
 ```
 
 ### Multiple Data Sources
 
-Combine keybinds from multiple tools:
+Combine keybinds from multiple tools in one category:
 
 ```yaml
-data_sources:
-  - file: vim.json
-  - file: tmux.json  
-  - file: git.json
-  - file: shell_essentials.json
+categories:
+  - name: "Development Workflow" 
+    sources:
+      - file: "vim.json"
+      - file: "tmux.json"  
+      - file: "git.json"
+      - file: "shell_essentials.json"
 ```
 
 ### Inline Data
 
-Add custom keybinds directly in the layout:
+Add custom keybinds directly in categories:
 
 ```yaml
-inline_data:
-  - category: "Custom Shortcuts"
-    icon: "⚡"
+categories:
+  - name: "Custom Shortcuts"
+    theme_color: "blue"
+    icon_name: "terminal"
     keybinds:
-      - key: "Super+Space"
-        action: "App Launcher"
+      - action: "App Launcher"
+        keys: "Super+Space"
         description: "Open application launcher"
+      - action: "Quick Terminal"
+        keys: "Ctrl+Alt+T"
+        description: "Fast terminal access"
 ```
 
 ### Priority System
 
 Data is merged with this priority (highest to lowest):
-1. **Inline data** (in layout file)
-2. **Data sources** (in order listed)
 
-Later sources override earlier ones for duplicate keys.
+1. **Inline keybinds** (in category `keybinds` field)
+2. **External sources** (in category `sources` field, in order listed)
+
+Later sources override earlier ones for duplicate action names.
 
 ## 🔧 Configuration Reference
 
@@ -300,28 +319,28 @@ Later sources override earlier ones for duplicate keys.
 title: string              # Cheatsheet title
 template: string           # "skill_tree" or "reference_card"  
 theme: string             # Theme name
-output: string            # Output filename
+output_name: string       # Base name for output files (without extension)
 
 # Optional
-data_sources:             # List of data sources
-  - file: string         # Path to JSON file
-    pick_category: list  # Categories to include (optional)
+categories:               # List of categories to display
+  - name: string         # Category name (required)
+    theme_color: string  # Theme color variant (optional)
+    icon_name: string    # Icon reference (optional)
+    sources:             # External data sources (optional)
+      - file: string     # Path to JSON file
+        pick_category: string|array  # Category/categories to include
+    keybinds:           # Inline keybind definitions (optional)
+      - action: string  # Action name (required)
+        keys: string|array  # Key combination(s) (required)
+        description: string  # Detailed description (optional)
 
-inline_data:             # Inline keybind definitions
-  - category: string     # Category name
-    icon: string         # Category icon (optional)
-    keybinds:           # List of keybinds
-      - key: string     # Key combination
-        action: string  # Action name
-        description: string  # Detailed description
-
-theme_overrides:         # Theme customization
+theme_overrides:         # Theme customization (optional)
   base_styles: object   # Base styling overrides
   card_styles: object   # Card component overrides
   keybind_styles: object # Keybind styling overrides
   color_variants: object # Color scheme variants
 
-grid:                    # Grid layout settings
+grid:                    # Grid layout settings (optional)
   columns: number       # Number of columns
   gap: string          # Gap size ("small", "medium", "large")
   responsive: boolean   # Enable responsive behavior
@@ -331,15 +350,16 @@ grid:                    # Grid layout settings
 
 ```json
 {
+  "tool": "string",         // Tool name (required)
+  "version": "string",      // Tool version (optional)
   "categories": [
     {
-      "category": "string",     // Category name (required)
-      "icon": "string",         // Category icon (optional)
+      "name": "string",     // Category name (required)
       "keybinds": [
         {
-          "key": "string",      // Key combination (required)
-          "action": "string",   // Action name (required)
-          "description": "string" // Description (optional)
+          "action": "string",      // Action name (required)
+          "keys": "string|array",  // Key combination(s) (required)
+          "description": "string"  // Description (optional)
         }
       ]
     }
@@ -352,9 +372,11 @@ grid:                    # Grid layout settings
 The `--init` command creates several example files to get you started:
 
 ### `my_workflow.yml`
+
 Advanced layout showcasing:
+
 - Multiple data sources
-- Category filtering
+- Category filtering  
 - Inline data
 - Theme overrides
 - Grid customization
@@ -376,17 +398,23 @@ keystone --init
 echo 'title: "Vim Quick Reference"
 template: reference_card
 theme: minimal
-data_sources:
-  - file: vim.json
-    pick_category: ["editing", "navigation"]' > vim_quick.yml
+output_name: vim_quick
+categories:
+  - name: "Essential Editing"
+    sources:
+      - file: "vim.json"
+        pick_category: ["editing", "navigation"]' > vim_quick.yml
 keystone vim_quick.yml
 
 # Generate a dark-themed git cheatsheet
 echo 'title: "Git Commands"
 template: skill_tree  
 theme: dark
-data_sources:
-  - file: git.json' > git_dark.yml
+output_name: git_dark
+categories:
+  - name: "Git Workflow"
+    sources:
+      - file: "git.json"' > git_dark.yml
 keystone git_dark.yml
 ```
 
