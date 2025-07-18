@@ -1,0 +1,57 @@
+# Advanced Workflow Example - Showcases multiple data sources, category filtering, and inline overrides
+title: "My Development Workflow"
+template: skill_tree
+theme: default
+output_name: workflow_cheatsheet
+
+# Define categories that combine multiple data sources
+categories:
+  - name: "Text Editing"
+    theme_color: "blue"
+    icon_name: "terminal"
+    sources:
+      - file: "vim.json"
+        pick_category: "editing"
+    # Inline keybinds (highest priority - will override source data)
+    keybinds:
+      - action: "Save All"
+        keys: "Ctrl+Shift+S"
+        description: "Save all open files"
+
+  - name: "Navigation"
+    theme_color: "purple"
+    icon_name: "grid"
+    sources:
+      - file: "vim.json"
+        pick_category: "navigation"
+
+  - name: "Terminal Management"
+    theme_color: "blue"
+    icon_name: "terminal"
+    sources:
+      - file: "tmux.json"
+        pick_category: "sessions"
+      - file: "shell_essentials.json"
+        pick_category: "file operations"
+
+  - name: "Version Control"
+    theme_color: "purple"
+    icon_name: "git"
+    sources:
+      - file: "git.json"
+        pick_category: "staging & commits"
+    keybinds:
+      - action: "Quick Commit"
+        keys: "Ctrl+K"
+        description: "Stage all and commit with message"
+
+  - name: "Custom Shortcuts"
+    theme_color: "blue"
+    icon_name: "terminal"
+    keybinds:
+      - action: "Open Terminal"
+        keys: "Ctrl+Alt+T"
+        description: "Quick terminal access"
+      - action: "App Launcher"
+        keys: "Super+Space"
+        description: "Fuzzy application finder"

@@ -1,0 +1,134 @@
+{
+  "categories": [
+    {
+      "name": "repository basics",
+      "keybinds": [
+        {
+          "keys": "git init",
+          "action": "Initialize repository",
+          "description": "Create a new Git repository"
+        },
+        {
+          "keys": "git clone url",
+          "action": "Clone repository",
+          "description": "Download a repository from remote"
+        },
+        {
+          "keys": "git status",
+          "action": "Check status",
+          "description": "Show working directory status"
+        },
+        {
+          "keys": "git log --oneline",
+          "action": "View history",
+          "description": "Show commit history in compact format"
+        },
+        {
+          "keys": "git remote -v",
+          "action": "List remotes",
+          "description": "Show configured remote repositories"
+        }
+      ]
+    },
+    {
+      "name": "staging & commits",
+      "keybinds": [
+        {
+          "keys": "git add .",
+          "action": "Stage all changes",
+          "description": "Add all modified files to staging area"
+        },
+        {
+          "keys": "git add file",
+          "action": "Stage specific file",
+          "description": "Add specific file to staging area"
+        },
+        {
+          "keys": "git commit -m 'message'",
+          "action": "Commit changes",
+          "description": "Create commit with message"
+        },
+        {
+          "keys": "git commit -am 'message'",
+          "action": "Stage and commit",
+          "description": "Stage all modified files and commit"
+        },
+        {
+          "keys": "git reset HEAD file",
+          "action": "Unstage file",
+          "description": "Remove file from staging area"
+        },
+        {
+          "keys": "git reset --hard HEAD",
+          "action": "Reset working directory",
+          "description": "Discard all uncommitted changes"
+        }
+      ]
+    },
+    {
+      "name": "branching",
+      "keybinds": [
+        {
+          "keys": "git branch",
+          "action": "List branches",
+          "description": "Show all local branches"
+        },
+        {
+          "keys": "git branch name",
+          "action": "Create branch",
+          "description": "Create new branch (don't switch)"
+        },
+        {
+          "keys": "git checkout name",
+          "action": "Switch branch",
+          "description": "Switch to existing branch"
+        },
+        {
+          "keys": "git checkout -b name",
+          "action": "Create and switch",
+          "description": "Create new branch and switch to it"
+        },
+        {
+          "keys": "git merge branch",
+          "action": "Merge branch",
+          "description": "Merge specified branch into current"
+        },
+        {
+          "keys": "git branch -d name",
+          "action": "Delete branch",
+          "description": "Delete local branch (safe)"
+        }
+      ]
+    },
+    {
+      "name": "remote operations",
+      "keybinds": [
+        {
+          "keys": "git fetch",
+          "action": "Fetch changes",
+          "description": "Download changes from remote (no merge)"
+        },
+        {
+          "keys": "git pull",
+          "action": "Pull changes",
+          "description": "Fetch and merge changes from remote"
+        },
+        {
+          "keys": "git push",
+          "action": "Push changes",
+          "description": "Upload changes to remote repository"
+        },
+        {
+          "keys": "git push -u origin branch",
+          "action": "Push new branch",
+          "description": "Push branch and set upstream tracking"
+        },
+        {
+          "keys": "git pull --rebase",
+          "action": "Pull with rebase",
+          "description": "Fetch and rebase local commits on top"
+        }
+      ]
+    }
+  ]
+}

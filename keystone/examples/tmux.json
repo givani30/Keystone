@@ -1,0 +1,129 @@
+{
+  "categories": [
+    {
+      "name": "sessions",
+      "keybinds": [
+        {
+          "keys": "Ctrl+a c",
+          "action": "New window",
+          "description": "Create a new terminal window"
+        },
+        {
+          "keys": "Ctrl+a n",
+          "action": "Next window",
+          "description": "Switch to the next window"
+        },
+        {
+          "keys": "Ctrl+a p",
+          "action": "Previous window",
+          "description": "Switch to the previous window"
+        },
+        {
+          "keys": "Ctrl+a w",
+          "action": "List windows",
+          "description": "Show window list for selection"
+        },
+        {
+          "keys": "Ctrl+a &",
+          "action": "Kill window",
+          "description": "Close current window (with confirmation)"
+        }
+      ]
+    },
+    {
+      "name": "panes",
+      "keybinds": [
+        {
+          "keys": "Ctrl+a %",
+          "action": "Vertical split",
+          "description": "Split pane vertically"
+        },
+        {
+          "keys": "Ctrl+a \"",
+          "action": "Horizontal split", 
+          "description": "Split pane horizontally"
+        },
+        {
+          "keys": "Ctrl+a o",
+          "action": "Switch pane",
+          "description": "Move to next pane"
+        },
+        {
+          "keys": "Ctrl+a x",
+          "action": "Kill pane",
+          "description": "Close current pane"
+        },
+        {
+          "keys": "Ctrl+a z",
+          "action": "Zoom pane",
+          "description": "Toggle pane zoom (fullscreen)"
+        },
+        {
+          "keys": "Ctrl+a {",
+          "action": "Move pane left",
+          "description": "Swap pane with previous"
+        },
+        {
+          "keys": "Ctrl+a }",
+          "action": "Move pane right", 
+          "description": "Swap pane with next"
+        }
+      ]
+    },
+    {
+      "name": "navigation",
+      "keybinds": [
+        {
+          "keys": "Ctrl+a [",
+          "action": "Copy mode",
+          "description": "Enter copy mode for scrolling/selecting"
+        },
+        {
+          "keys": "Ctrl+a ]",
+          "action": "Paste",
+          "description": "Paste from tmux buffer"
+        },
+        {
+          "keys": "Ctrl+a f",
+          "action": "Find window",
+          "description": "Search for window by name"
+        },
+        {
+          "keys": "Ctrl+a s",
+          "action": "Session list",
+          "description": "Show and switch between sessions"
+        }
+      ]
+    },
+    {
+      "name": "session management",
+      "keybinds": [
+        {
+          "keys": "tmux new -s name",
+          "action": "New session",
+          "description": "Create named session"
+        },
+        {
+          "keys": "tmux attach -t name",
+          "action": "Attach session",
+          "description": "Attach to existing session"
+        },
+        {
+          "keys": "Ctrl+a d",
+          "action": "Detach session",
+          "description": "Detach from current session"
+        },
+        {
+          "keys": "tmux ls",
+          "action": "List sessions",
+          "description": "Show all active sessions"
+        },
+        {
+          "keys": "tmux kill-session -t name",
+          "action": "Kill session",
+          "description": "Terminate specific session"
+        }
+      ]
+    }
+  ]
+}

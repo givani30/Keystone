@@ -1,0 +1,159 @@
+{
+  "categories": [
+    {
+      "name": "motion & navigation",
+      "keybinds": [
+        {
+          "keys": "h j k l",
+          "action": "Move cursor",
+          "description": "Left, down, up, right movement"
+        },
+        {
+          "keys": "w b e",
+          "action": "Word movement",
+          "description": "Next word, previous word, end of word"
+        },
+        {
+          "keys": "0 ^ $",
+          "action": "Line navigation",
+          "description": "Start of line, first non-blank, end of line"
+        },
+        {
+          "keys": "gg G",
+          "action": "File navigation",
+          "description": "Go to first line, go to last line"
+        },
+        {
+          "keys": "Ctrl+u Ctrl+d",
+          "action": "Page scroll",
+          "description": "Scroll up half page, scroll down half page"
+        },
+        {
+          "keys": "f F",
+          "action": "Find character",
+          "description": "Find next char, find previous char"
+        },
+        {
+          "keys": "/ ?",
+          "action": "Search",
+          "description": "Search forward, search backward"
+        },
+        {
+          "keys": "n N",
+          "action": "Search navigation",
+          "description": "Next match, previous match"
+        }
+      ]
+    },
+    {
+      "name": "editing",
+      "keybinds": [
+        {
+          "keys": "i a o",
+          "action": "Insert modes",
+          "description": "Insert at cursor, append, open line below"
+        },
+        {
+          "keys": "I A O",
+          "action": "Insert modes (line)",
+          "description": "Insert at line start, append at end, open line above"
+        },
+        {
+          "keys": "x X",
+          "action": "Delete character",
+          "description": "Delete at cursor, delete before cursor"
+        },
+        {
+          "keys": "dd D",
+          "action": "Delete line",
+          "description": "Delete entire line, delete to end of line"
+        },
+        {
+          "keys": "yy Y",
+          "action": "Yank line",
+          "description": "Copy entire line, copy to end of line"
+        },
+        {
+          "keys": "p P",
+          "action": "Paste",
+          "description": "Paste after cursor, paste before cursor"
+        },
+        {
+          "keys": "u Ctrl+r",
+          "action": "Undo/Redo",
+          "description": "Undo last change, redo last undo"
+        },
+        {
+          "keys": "r R",
+          "action": "Replace",
+          "description": "Replace single character, replace mode"
+        }
+      ]
+    },
+    {
+      "name": "visual mode",
+      "keybinds": [
+        {
+          "keys": "v V",
+          "action": "Visual mode",
+          "description": "Character visual, line visual"
+        },
+        {
+          "keys": "Ctrl+v",
+          "action": "Block visual",
+          "description": "Visual block mode (column selection)"
+        },
+        {
+          "keys": "gv",
+          "action": "Reselect",
+          "description": "Reselect last visual selection"
+        },
+        {
+          "keys": "o",
+          "action": "Toggle selection end",
+          "description": "Move to other end of selection"
+        },
+        {
+          "keys": "d y c",
+          "action": "Visual operations",
+          "description": "Delete, yank, change selection"
+        }
+      ]
+    },
+    {
+      "name": "file operations",
+      "keybinds": [
+        {
+          "keys": ":w",
+          "action": "Save file",
+          "description": "Write file to disk"
+        },
+        {
+          "keys": ":q",
+          "action": "Quit",
+          "description": "Quit vim (fails if unsaved changes)"
+        },
+        {
+          "keys": ":wq :x",
+          "action": "Save and quit",
+          "description": "Write file and quit"
+        },
+        {
+          "keys": ":q!",
+          "action": "Force quit",
+          "description": "Quit without saving changes"
+        },
+        {
+          "keys": ":e filename",
+          "action": "Edit file",
+          "description": "Open file for editing"
+        },
+        {
+          "keys": ":bn :bp",
+          "action": "Buffer navigation",
+          "description": "Next buffer, previous buffer"
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,8 @@ import argparse
 import sys
 import importlib
 import json
+import shutil
+import os
 from pathlib import Path
 
 from .core.layout_parser import parse_layout
@@ -66,106 +68,64 @@ def handle_validate_command(args) -> int:
 def handle_init_command() -> int:
     """Handle the --init command to create example files."""
     try:
-        # Create example layout.yml file
-        layout_content = """# Keystone Layout Configuration Example
-# This file defines how to combine keybind data sources and generate cheatsheets
-
-# Required fields
-title: "Example Cheatsheet"
-template: "skill_tree"  # or "reference_card"
-theme: "default"
-output_name: "cheatsheet"
-
-# Define categories for your keybinds
-categories:
-  - name: "Editing"
-    theme_color: "blue"
-    icon_name: "terminal"
-    sources:
-      - file: "example_keybinds.json"
-        pick_category: "editing"
-    # Optional inline keybinds (highest priority - will override source data)
-    keybinds:
-      - action: "Save file"
-        keys: "Ctrl+S"
-        description: "Save the current file"
-
-  - name: "Navigation" 
-    theme_color: "purple"
-    icon_name: "grid"
-    sources:
-      - file: "example_keybinds.json"
-        pick_category: "navigation"
-"""
-
-        layout_file = Path("keystone.yml")
-        if layout_file.exists():
-            print(f"Warning: {layout_file} already exists, skipping...")
-        else:
-            with open(layout_file, 'w', encoding='utf-8') as f:
-                f.write(layout_content)
-            print(f"Created: {layout_file}")
-
-        # Create example keybinds JSON file
-        keybinds_content = {
-            "tool": "Example Editor",
-            "version": "1.0",
-            "categories": [
-                {
-                    "name": "editing",
-                    "keybinds": [
-                        {
-                            "action": "Copy",
-                            "keys": "Ctrl+C",
-                            "description": "Copy selected text"
-                        },
-                        {
-                            "action": "Paste",
-                            "keys": "Ctrl+V", 
-                            "description": "Paste text from clipboard"
-                        },
-                        {
-                            "action": "Cut",
-                            "keys": "Ctrl+X",
-                            "description": "Cut selected text"
-                        }
-                    ]
-                },
-                {
-                    "name": "navigation",
-                    "keybinds": [
-                        {
-                            "action": "Find",
-                            "keys": "Ctrl+F",
-                            "description": "Open find dialog"
-                        },
-                        {
-                            "action": "Go to line",
-                            "keys": "Ctrl+G",
-                            "description": "Jump to a specific line number"
-                        },
-                        {
-                            "action": "Quick open",
-                            "keys": "Ctrl+P",
-                            "description": "Quickly open files"
-                        }
-                    ]
-                }
-            ]
-        }
-
-        keybinds_file = Path("example_keybinds.json")
-        if keybinds_file.exists():
-            print(f"Warning: {keybinds_file} already exists, skipping...")
-        else:
-            with open(keybinds_file, 'w', encoding='utf-8') as f:
-                json.dump(keybinds_content, f, indent=2)
-            print(f"Created: {keybinds_file}")
-
-        print("\n📁 Example files created successfully!")
-        print("📖 To generate a cheatsheet, run: keystone keystone.yml")
-        print("📖 To see all options, run: keystone --help")
+        # Get the original working directory (where the user invoked the command)
+        # When using uv run --directory, the original PWD is preserved in environment
+        original_cwd = os.environ.get('PWD', os.getcwd())
+        original_path = Path(original_cwd)
         
+        # Get the path to the examples directory in the package
+        current_dir = Path(__file__).parent
+        examples_dir = current_dir / "examples"
+        
+        if not examples_dir.exists():
+            print("Error: Examples directory not found in package.", file=sys.stderr)
+            return 1
+        
+        # List of example files to copy
+        example_files = [
+            "my_workflow.yml",
+            "vim.json", 
+            "tmux.json",
+            "git.json",
+            "shell_essentials.json"
+        ]
+        
+        # Copy each example file to original working directory
+        copied_files = []
+        for filename in example_files:
+            source_file = examples_dir / filename
+            dest_file = original_path / filename
+            
+            if not source_file.exists():
+                print(f"Warning: Example file {filename} not found in package, skipping...")
+                continue
+                
+            if dest_file.exists():
+                print(f"Warning: {filename} already exists, skipping...")
+                continue
+                
+            try:
+                shutil.copy2(source_file, dest_file)
+                copied_files.append(filename)
+                print(f"Created: {filename}")
+            except Exception as e:
+                print(f"Warning: Failed to copy {filename}: {e}")
+        
+        if copied_files:
+            print(f"\n📁 Successfully created {len(copied_files)} example files!")
+            print("\n🚀 Quick Start:")
+            print("   1. Generate your first cheatsheet: keystone my_workflow.yml")
+            print("   2. Try different themes: keystone --theme dark my_workflow.yml")
+            print("   3. See all options: keystone --help")
+            print("\n📖 Example files showcase:")
+            print("   • my_workflow.yml - Advanced layout with multiple data sources")
+            print("   • vim.json - Vim editor keybindings")
+            print("   • tmux.json - Terminal multiplexer commands")
+            print("   • git.json - Git version control workflow") 
+            print("   • shell_essentials.json - Essential shell commands")
+        else:
+            print("\n⚠️  No new files were created (files may already exist)")
+            
         return 0
         
     except Exception as e:

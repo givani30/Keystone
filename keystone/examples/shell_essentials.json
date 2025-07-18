@@ -1,0 +1,189 @@
+{
+  "categories": [
+    {
+      "name": "file operations",
+      "keybinds": [
+        {
+          "keys": "ls -la",
+          "action": "List files (detailed)",
+          "description": "Show all files with permissions and details"
+        },
+        {
+          "keys": "cd path",
+          "action": "Change directory",
+          "description": "Navigate to specified directory"
+        },
+        {
+          "keys": "pwd",
+          "action": "Print working directory",
+          "description": "Show current directory path"
+        },
+        {
+          "keys": "mkdir -p dir",
+          "action": "Create directory",
+          "description": "Create directory (with parents if needed)"
+        },
+        {
+          "keys": "rm -rf dir",
+          "action": "Remove directory",
+          "description": "Delete directory and all contents"
+        },
+        {
+          "keys": "cp -r src dest",
+          "action": "Copy recursively",
+          "description": "Copy files/directories to destination"
+        },
+        {
+          "keys": "mv src dest",
+          "action": "Move/rename",
+          "description": "Move or rename files/directories"
+        }
+      ]
+    },
+    {
+      "name": "text processing",
+      "keybinds": [
+        {
+          "keys": "grep -r pattern .",
+          "action": "Search in files",
+          "description": "Recursively search for pattern in files"
+        },
+        {
+          "keys": "find . -name '*.txt'",
+          "action": "Find files",
+          "description": "Find files matching pattern"
+        },
+        {
+          "keys": "sed 's/old/new/g' file",
+          "action": "Replace text",
+          "description": "Replace all occurrences in file"
+        },
+        {
+          "keys": "awk '{print $1}' file",
+          "action": "Extract columns",
+          "description": "Print first column of each line"
+        },
+        {
+          "keys": "sort file | uniq",
+          "action": "Sort and deduplicate",
+          "description": "Sort lines and remove duplicates"
+        },
+        {
+          "keys": "wc -l file",
+          "action": "Count lines",
+          "description": "Count number of lines in file"
+        }
+      ]
+    },
+    {
+      "name": "process management",
+      "keybinds": [
+        {
+          "keys": "ps aux",
+          "action": "List processes",
+          "description": "Show all running processes"
+        },
+        {
+          "keys": "top",
+          "action": "Process monitor",
+          "description": "Real-time process and resource monitor"
+        },
+        {
+          "keys": "htop",
+          "action": "Enhanced process monitor",
+          "description": "Interactive process viewer (if installed)"
+        },
+        {
+          "keys": "kill -9 PID",
+          "action": "Force kill process",
+          "description": "Forcefully terminate process by PID"
+        },
+        {
+          "keys": "killall name",
+          "action": "Kill by name",
+          "description": "Kill all processes matching name"
+        },
+        {
+          "keys": "nohup command &",
+          "action": "Background process",
+          "description": "Run command in background, survives logout"
+        },
+        {
+          "keys": "jobs",
+          "action": "List jobs",
+          "description": "Show background jobs in current shell"
+        }
+      ]
+    },
+    {
+      "name": "system info",
+      "keybinds": [
+        {
+          "keys": "df -h",
+          "action": "Disk usage",
+          "description": "Show filesystem disk space usage"
+        },
+        {
+          "keys": "du -sh *",
+          "action": "Directory sizes",
+          "description": "Show size of each item in current directory"
+        },
+        {
+          "keys": "free -h",
+          "action": "Memory usage",
+          "description": "Display memory usage in human-readable format"
+        },
+        {
+          "keys": "uname -a",
+          "action": "System info",
+          "description": "Show system information"
+        },
+        {
+          "keys": "uptime",
+          "action": "System uptime",
+          "description": "Show how long system has been running"
+        },
+        {
+          "keys": "who",
+          "action": "Logged in users",
+          "description": "Show currently logged in users"
+        }
+      ]
+    },
+    {
+      "name": "network & archive",
+      "keybinds": [
+        {
+          "keys": "curl -L url",
+          "action": "Download file",
+          "description": "Download file from URL (follow redirects)"
+        },
+        {
+          "keys": "wget url",
+          "action": "Download with wget",
+          "description": "Download file using wget"
+        },
+        {
+          "keys": "tar -czf archive.tar.gz dir/",
+          "action": "Create archive",
+          "description": "Create compressed tar archive"
+        },
+        {
+          "keys": "tar -xzf archive.tar.gz",
+          "action": "Extract archive",
+          "description": "Extract compressed tar archive"
+        },
+        {
+          "keys": "zip -r archive.zip dir/",
+          "action": "Create zip",
+          "description": "Create zip archive"
+        },
+        {
+          "keys": "unzip archive.zip",
+          "action": "Extract zip",
+          "description": "Extract zip archive"
+        }
+      ]
+    }
+  ]
+}
