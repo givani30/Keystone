@@ -1,8 +1,112 @@
-# Task Master AI - Claude Code Integration Guide
+# Keystone - Claude Code Integration Guide
 
-## Essential Commands
+## Overview
 
-### Core Workflow Commands
+This document provides essential context for developing **Keystone**, a Python command-line tool that generates visually appealing keybind cheatsheets from JSON and YAML configuration files.
+
+The core idea is to separate keybind data from presentation, allowing users to define their keybinds once and render them in multiple formats and styles using templates and themes.
+
+## Keystone Commands
+
+### Package Management (`uv`)
+
+This project uses `uv` for fast dependency management.
+
+```bash
+# Install project in editable mode with all optional dependencies
+uv pip install -e .[pdf,dev]
+
+# Check for broken dependencies
+uv pip check
+
+# Run linters/formatters (once configured)
+# uv run lint
+# uv run format
+```
+
+### Keystone CLI Usage
+
+The main entry point is the `keystone` command.
+
+```bash
+# Auto-discover and run from keystone.yml, layout.yml, or .keystone.yml
+keystone
+
+# Run with an explicit layout file
+keystone my_workflow.yml
+
+# Override settings from the layout file
+keystone my_workflow.yml --template reference_card --theme dark
+
+# Control output format and location
+keystone my_workflow.yml --format pdf --output ~/Desktop/cheatsheet.pdf
+
+# Validate configuration files without generating output
+keystone --validate
+
+# Create example data and layout files in the current directory
+keystone --init
+
+# List available themes
+keystone --list-themes
+```
+
+## Keystone Project Structure
+
+The project follows a modular architecture to separate concerns.
+
+```
+keystone/
+├── main.py                   # CLI entry point (argparse)
+├── core/
+│   ├── generator.py          # Core HTML/PDF generation logic
+│   ├── validator.py          # Schema validation (JSON Schema)
+│   ├── data_loader.py        # Loads keybind data files (.json)
+│   └── layout_parser.py      # Parses layout configuration (.yml)
+├── templates/
+│   ├── skill_tree.py         # Card-based "Skill Tree" template
+│   └── reference_card.py     # Dense, table-based "Reference Card" template
+├── themes/
+│   ├── default.json          # Base theme with style classes
+│   ├── dark.json             # Dark theme variant
+│   └── minimal.json          # Minimalist theme variant
+├── assets/
+│   ├── icons.json            # SVG icon manifest (e.g., for Heroicons)
+│   └── schemas/
+│       ├── data_schema.json      # Schema for keybind data files
+│       └── layout_schema.json    # Schema for layout config files
+└── utils/
+    ├── discovery.py          # Logic to find the layout config file
+    ├── pdf_generator.py      # WeasyPrint integration for PDF output
+    └── theme_loader.py       # Loads themes and handles inheritance
+```
+
+## Keystone Core Concepts
+
+- **Data Files (`.json`):** Contain tool-specific keybinds, organized into categories. Validated by `data_schema.json`.
+- **Layout File (`.yml`):** The main configuration file. It defines the title, output name, template, theme, and orchestrates which data files to use. It can also include inline keybinds that override imported ones. Validated by `layout_schema.json`.
+- **Templates (`.py`):** Python modules that generate the HTML structure. They receive the parsed data and theme information and return an HTML string.
+- **Themes (`.json`):** Define the visual appearance by mapping style names (e.g., `card_header`) to CSS utility classes (e.g., `bg-blue-500 text-white`). Themes can inherit from a base theme.
+- **Schemas (`.json`):** Define the valid structure for data and layout files, enabling robust validation.
+
+## Keystone Development Workflow
+
+1. **Setup:** Ensure dependencies are installed with `uv pip install -e .[pdf,dev]`.
+2. **Create Test Data:** Use `keystone --init` to generate `layout.yml` and `keybinds.json` for testing.
+3. **Modify Code:**
+   - To change HTML structure, edit a file in `keystone/templates/`.
+   - To change styling, edit a file in `keystone/themes/`.
+   - To change core logic (data loading, validation, etc.), edit a file in `keystone/core/`.
+4. **Run & Test:** Execute `keystone layout.yml --format html --output test.html` to generate a cheatsheet.
+5. **View Output:** Open `test.html` in a browser to inspect the changes.
+6. **Validate:** Run `keystone --validate` to check your configuration against the schemas.
+7. **Testing:** Run `pytest` to execute the test suite.
+
+## Task Master AI Integration
+
+### Essential Commands
+
+#### Core Workflow Commands
 
 ```bash
 # Project Setup
@@ -102,30 +206,31 @@ Task Master provides an MCP server that Claude Code can connect to. Configure in
 }
 ```
 
-### Essential MCP Tools
+### Essential CLI Tools (No MCP Available)
 
-```javascript
-help; // = shows available taskmaster commands
-// Project setup
-initialize_project; // = task-master init
-parse_prd; // = task-master parse-prd
+Since MCP is not available, use the CLI commands directly:
 
-// Daily workflow
-get_tasks; // = task-master list
-next_task; // = task-master next
-get_task; // = task-master show <id>
-set_task_status; // = task-master set-status
+```bash
+# Project setup
+task-master init                            # Initialize Task Master in current project
+task-master parse-prd .taskmaster/docs/prd.txt  # Generate tasks from PRD document
 
-// Task management
-add_task; // = task-master add-task
-expand_task; // = task-master expand
-update_task; // = task-master update-task
-update_subtask; // = task-master update-subtask
-update; // = task-master update
+# Daily workflow
+task-master list                            # Show all tasks with status
+task-master next                            # Get next available task to work on
+task-master show <id>                       # View detailed task information
+task-master set-status --id=<id> --status=done  # Mark task complete
 
-// Analysis
-analyze_project_complexity; // = task-master analyze-complexity
-complexity_report; // = task-master complexity-report
+# Task management
+task-master add-task --prompt="description" --research     # Add new task with AI assistance
+task-master expand --id=<id> --research --force           # Break task into subtasks
+task-master update-task --id=<id> --prompt="changes"      # Update specific task
+task-master update-subtask --id=<id> --prompt="notes"     # Add implementation notes to subtask
+task-master update --from=<id> --prompt="changes"         # Update multiple tasks from ID onwards
+
+# Analysis
+task-master analyze-complexity --research   # Analyze task complexity
+task-master complexity-report              # View complexity analysis
 ```
 
 ## Claude Code Workflow Integration
@@ -217,8 +322,9 @@ Add to `.claude/settings.json`:
     "Bash(task-master *)",
     "Bash(git commit:*)",
     "Bash(git add:*)",
-    "Bash(npm run *)",
-    "mcp__task_master_ai__*"
+    "Bash(uv *)",
+    "Bash(keystone *)",
+    "Bash(pytest *)"
   ]
 }
 ```
@@ -351,12 +457,15 @@ task-master models
 task-master models --set-fallback gpt-4o-mini
 ```
 
-### MCP Connection Issues
+### CLI Integration
 
-- Check `.mcp.json` configuration
-- Verify Node.js installation
-- Use `--mcp-debug` flag when starting Claude Code
-- Use CLI as fallback if MCP unavailable
+Since MCP is not available, use the CLI commands directly:
+
+```bash
+# Always use CLI commands
+task-master --help                         # Show all available commands
+task-master models                         # Check current model configuration
+```
 
 ### Task File Sync Issues
 
