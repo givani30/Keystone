@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VS Code Reference Card - Reference Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .keybind-key { 
+            display: inline-block;
+            min-width: 1.5rem;
+            text-align: center;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        @media print {
+            body { font-size: 10px; }
+            .container { max-width: none; margin: 0; padding: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-inter">
+    <div class="mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">VS Code Reference Card</h1>
+            <p class="text-gray-600 text-sm">Version: 1.85.0</p>
+        </header>
+        
+        
+    <table class="w-full border border-gray-300">
+        <thead>
+            <tr class="bg-gray-100 text-gray-700 font-semibold border-gray-300">
+                <th class="border border-gray-300 px-3 py-2 text-left w-1/4">Category</th>
+                <th class="border border-gray-300 px-3 py-2 text-left w-1/3">Action</th>
+                <th class="border border-gray-300 px-3 py-2 text-left w-1/4">Keybind</th>
+                <th class="border border-gray-300 px-3 py-2 text-left">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                <tr class="hover:bg-gray-50 border-gray-300">
+                    
+                    <td class="border border-gray-300 px-3 py-2 font-medium align-top" rowspan="3">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" /></svg>
+                            <span>File Operations</span>
+                        </div>
+                    </td>
+                    <td class="border border-gray-300 px-3 py-2">New File</td>
+                    <td class="border border-gray-300 px-3 py-2"><div class="inline-flex items-center gap-1 flex-wrap"><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">Ctrl</kbd><span class="text-gray-500 mx-1">+</span><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">N</kbd></div></td>
+                    <td class="border border-gray-300 px-3 py-2 text-sm text-gray-600">Create a new file</td>
+                </tr>
+
+                <tr class="hover:bg-gray-50 border-gray-300">
+                    
+                    <td class="border border-gray-300 px-3 py-2">Open File</td>
+                    <td class="border border-gray-300 px-3 py-2"><div class="inline-flex items-center gap-1 flex-wrap"><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">Ctrl</kbd><span class="text-gray-500 mx-1">+</span><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">O</kbd></div></td>
+                    <td class="border border-gray-300 px-3 py-2 text-sm text-gray-600">Open an existing file</td>
+                </tr>
+
+                <tr class="hover:bg-gray-50 border-gray-300">
+                    
+                    <td class="border border-gray-300 px-3 py-2">Save File</td>
+                    <td class="border border-gray-300 px-3 py-2"><div class="inline-flex items-center gap-1 flex-wrap"><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">Ctrl</kbd><span class="text-gray-500 mx-1">+</span><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">S</kbd></div></td>
+                    <td class="border border-gray-300 px-3 py-2 text-sm text-gray-600">Save current file</td>
+                </tr>
+
+                <tr class="hover:bg-gray-50 border-gray-300">
+                    
+                    <td class="border border-gray-300 px-3 py-2 font-medium align-top" rowspan="2">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" /></svg>
+                            <span>Navigation</span>
+                        </div>
+                    </td>
+                    <td class="border border-gray-300 px-3 py-2">Go to Line</td>
+                    <td class="border border-gray-300 px-3 py-2"><div class="inline-flex items-center gap-1 flex-wrap"><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">Ctrl</kbd><span class="text-gray-500 mx-1">+</span><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">G</kbd></div></td>
+                    <td class="border border-gray-300 px-3 py-2 text-sm text-gray-600">Navigate to specific line</td>
+                </tr>
+
+                <tr class="hover:bg-gray-50 border-gray-300">
+                    
+                    <td class="border border-gray-300 px-3 py-2">Quick Open</td>
+                    <td class="border border-gray-300 px-3 py-2"><div class="inline-flex items-center gap-1 flex-wrap"><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">Ctrl</kbd><span class="text-gray-500 mx-1">+</span><kbd class="bg-gray-200 border border-gray-300 rounded-md px-2 py-1 font-mono text-sm font-semibold keybind-key text-xs">P</kbd></div></td>
+                    <td class="border border-gray-300 px-3 py-2 text-sm text-gray-600">Quick file picker</td>
+                </tr>
+
+            <tr class="hover:bg-gray-50 border-gray-300">
+                <td class="border border-gray-300 px-3 py-2 font-medium">
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" /></svg>
+                        <span>Empty Category</span>
+                    </div>
+                </td>
+                <td class="border border-gray-300 px-3 py-2 text-gray-500 italic" colspan="3">No keybinds available</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</body>
+</html>

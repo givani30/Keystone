@@ -521,7 +521,7 @@
         "dependencies": [
           6
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -529,7 +529,7 @@
             "description": "Enhance the source processing logic in `keystone/core/layout_parser.py` to detect if a `pick_category` key is present in each source entry. Parse its value, supporting both string and list of strings, and prepare the list of categories to be picked from the loaded data.",
             "dependencies": [],
             "details": "Update the parser to check for the presence of the `pick_category` key in each source entry. If found, normalize its value to a list of category names for consistent downstream processing.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -540,7 +540,7 @@
               1
             ],
             "details": "Implement the filtering logic using Python techniques such as list comprehensions or the `filter()` function to efficiently select only the desired categories from the loaded data structure.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -551,7 +551,7 @@
               2
             ],
             "details": "Update the merge pipeline to incorporate the filtered data. Create test cases with layout files specifying `pick_category` and assert that the output contains only the selected categories, ensuring correct integration and behavior.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -658,7 +658,7 @@
           3,
           7
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": []
       },
       {
@@ -703,7 +703,7 @@
     ],
     "metadata": {
       "created": "2025-07-18T10:22:32.244Z",
-      "updated": "2025-07-18T11:48:13.647Z",
+      "updated": "2025-07-18T12:04:29.124Z",
       "description": "Tasks for master context"
     }
   }

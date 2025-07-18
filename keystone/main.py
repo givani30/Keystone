@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict, Any
 
 from .core.layout_parser import parse_layout
+from .core.validator import validate_references
 from .utils.theme_loader import load_theme, load_icons
 from .utils.pdf_generator import generate_pdf
 from .templates.skill_tree import generate_html
@@ -97,6 +98,13 @@ Examples:
         # Load theme and icons
         theme = load_theme(theme_name)
         icons = load_icons()
+        
+        # Validate theme and icon references
+        print("Validating theme and icon references...")
+        is_valid, error_message = validate_references(layout_data, theme, icons)
+        if not is_valid:
+            print(f"Error: {error_message}", file=sys.stderr)
+            return 1
         
         # Generate HTML (only skill_tree template for now)
         template_name = args.template or layout_data.get("template", "skill_tree")
