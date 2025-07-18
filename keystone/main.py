@@ -8,6 +8,7 @@ from .core.layout_parser import parse_layout
 from .core.validator import validate_references
 from .utils.theme_loader import load_theme, load_icons
 from .utils.pdf_generator import generate_pdf
+from .utils.discovery import find_layout_file
 
 
 def main():
@@ -24,10 +25,11 @@ Examples:
         """
     )
     
-    # Required positional argument
+    # Layout file argument (now optional)
     parser.add_argument(
         "layout_file", 
-        help="The layout configuration file (YAML format)"
+        nargs="?",  # Make it optional
+        help="The layout configuration file (YAML format). If not provided, will search for keystone.yml, layout.yml, or .keystone.yml"
     )
     
     # Optional arguments
@@ -82,15 +84,32 @@ Examples:
             print("List themes mode not yet implemented.")
             return 1
 
+        # Determine layout file to use
+        if args.layout_file:
+            # Use the provided layout file
+            layout_file_path = args.layout_file
+        else:
+            # Try to auto-discover layout file
+            print("No layout file specified, searching for configuration file...")
+            discovered_file = find_layout_file()
+            if discovered_file:
+                layout_file_path = discovered_file
+                print(f"Found configuration file: {layout_file_path}")
+            else:
+                print("Error: No layout file specified and no configuration file found.", file=sys.stderr)
+                print("Searched for: keystone.yml, layout.yml, .keystone.yml", file=sys.stderr)
+                print("Please provide a layout file as an argument or create one of the above files.", file=sys.stderr)
+                return 1
+
         # Check if layout file exists
-        layout_path = Path(args.layout_file)
+        layout_path = Path(layout_file_path)
         if not layout_path.exists():
-            print(f"Error: Layout file '{args.layout_file}' not found.", file=sys.stderr)
+            print(f"Error: Layout file '{layout_file_path}' not found.", file=sys.stderr)
             return 1
 
         # Parse the layout file
-        print(f"Loading layout from: {args.layout_file}")
-        layout_data = parse_layout(args.layout_file)
+        print(f"Loading layout from: {layout_file_path}")
+        layout_data = parse_layout(layout_file_path)
         
         # Determine theme to use (CLI override takes precedence)
         theme_name = args.theme or layout_data.get("theme", "default")

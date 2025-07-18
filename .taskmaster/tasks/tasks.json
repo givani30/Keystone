@@ -566,7 +566,7 @@
         "dependencies": [
           9
         ],
-        "status": "pending",
+        "status": "done",
         "subtasks": [
           {
             "id": 1,
@@ -574,7 +574,7 @@
             "description": "Develop the core logic to traverse the current and parent directories (up to a defined limit) to search for configuration files named 'keystone.yml', 'layout.yml', or '.keystone.yml'. Ensure the logic is robust against edge cases such as symlinks, permission errors, and non-existent directories.",
             "dependencies": [],
             "details": "Create a function (e.g., find_layout_file) in keystone/utils/discovery.py that starts from the current working directory and ascends the directory tree, checking for the presence of any of the target config files at each level. Stop traversal at the filesystem root or after a reasonable number of parent directories. Return the path to the first found file or None if not found.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -585,7 +585,7 @@
               1
             ],
             "details": "In keystone/main.py, update the argument parsing logic to call the discovery function when the layout file argument is missing. Ensure that the CLI behavior is clear and user-friendly, with appropriate error messages if no config file is found.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           },
           {
@@ -597,7 +597,7 @@
               2
             ],
             "details": "Create test directories and files to simulate different scenarios. Write tests that change the working directory and assert that the discovery function finds the correct file or returns an error as expected. Include edge cases such as symlinks, permission issues, and deeply nested directories.",
-            "status": "pending",
+            "status": "done",
             "testStrategy": ""
           }
         ]
@@ -703,7 +703,7 @@
     ],
     "metadata": {
       "created": "2025-07-18T10:22:32.244Z",
-      "updated": "2025-07-18T12:26:56.474Z",
+      "updated": "2025-07-18T12:39:28.124Z",
       "description": "Tasks for master context"
     }
   }

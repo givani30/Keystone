@@ -1,5 +1,6 @@
 pyproject.toml
 keystone/__init__.py
+keystone/__main__.py
 keystone/main.py
 keystone.egg-info/PKG-INFO
 keystone.egg-info/SOURCES.txt
@@ -15,10 +16,17 @@ keystone/core/validator.py
 keystone/core/tests/test_data_loader.py
 keystone/core/tests/test_layout_parser.py
 keystone/core/tests/test_validator.py
+keystone/core/tests/test_validator_references.py
 keystone/templates/reference_card.py
 keystone/templates/skill_tree.py
 keystone/templates/tests/__init__.py
+keystone/templates/tests/test_reference_card.py
 keystone/templates/tests/test_skill_tree.py
+keystone/tests/test_main_cli.py
+keystone/tests/test_pdf_generation.py
+keystone/tests/test_theme_inheritance.py
 keystone/utils/discovery.py
 keystone/utils/pdf_generator.py
 keystone/utils/theme_loader.py
+keystone/utils/tests/__init__.py
+keystone/utils/tests/test_discovery.py
