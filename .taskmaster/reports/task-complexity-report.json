@@ -1,0 +1,133 @@
+{
+	"meta": {
+		"generatedAt": "2025-07-18T10:55:08.787Z",
+		"tasksAnalyzed": 15,
+		"totalTasks": 20,
+		"analysisCount": 15,
+		"thresholdScore": 5,
+		"projectName": "Taskmaster",
+		"usedResearch": true
+	},
+	"complexityAnalysis": [
+		{
+			"taskId": 5,
+			"taskTitle": "Implement Keybind Data Loader",
+			"complexityScore": 4,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Break down the implementation of the keybind data loader into: (1) file reading and error handling, (2) JSON parsing and error handling, (3) schema validation using validator.py, (4) unit test coverage for valid, invalid, and missing files.",
+			"reasoning": "This task involves standard file I/O, JSON parsing, and schema validation, all of which are well-supported by Python libraries and common patterns. The complexity is moderate due to the need for robust error handling and integration with the validation module, but the logic is linear and not deeply nested."
+		},
+		{
+			"taskId": 6,
+			"taskTitle": "Implement Data Merging Logic",
+			"complexityScore": 7,
+			"recommendedSubtasks": 5,
+			"expansionPrompt": "Expand the data merging logic into: (1) iterating and loading all sources, (2) implementing the override/priority rules, (3) merging inline keybinds, (4) handling edge cases (e.g., missing or conflicting keys), (5) writing integration tests for various merge scenarios.",
+			"reasoning": "Merging data from multiple sources with override rules introduces branching logic and potential edge cases, increasing cyclomatic and cognitive complexity. Ensuring correct priority handling and robust integration with other modules requires careful design and thorough testing."
+		},
+		{
+			"taskId": 8,
+			"taskTitle": "Implement 'Skill Tree' HTML Template",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Decompose the template implementation into: (1) HTML structure generation, (2) dynamic class assignment from theme, (3) icon embedding, (4) unit and visual tests with mock data.",
+			"reasoning": "While HTML templating is straightforward, dynamic styling and icon embedding add moderate complexity. Ensuring maintainability and testability, especially for visual output, requires clear separation of concerns and comprehensive tests."
+		},
+		{
+			"taskId": 9,
+			"taskTitle": "Implement Basic CLI with `argparse`",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Split the CLI implementation into: (1) argument parsing setup, (2) integration with layout parser, theme loader, and template, (3) output file handling, (4) end-to-end CLI tests including error cases.",
+			"reasoning": "Setting up a CLI with `argparse` is standard, but integrating multiple modules and handling file I/O and errors increases the complexity. Ensuring a smooth user experience and robust error handling is essential."
+		},
+		{
+			"taskId": 10,
+			"taskTitle": "Implement PDF Generation with WeasyPrint",
+			"complexityScore": 4,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Divide PDF generation into: (1) WeasyPrint integration and error handling, (2) CLI argument extension for format selection, (3) tests for both installed and missing dependency scenarios.",
+			"reasoning": "The logic is mostly linear and leverages an external library, but requires careful error handling and CLI integration. The main challenge is ensuring graceful degradation if the dependency is missing."
+		},
+		{
+			"taskId": 11,
+			"taskTitle": "Implement Theme System with Inheritance",
+			"complexityScore": 6,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Expand theme inheritance into: (1) detecting and loading base themes recursively, (2) deep merging of theme dictionaries, (3) special handling for color variants, (4) unit tests for inheritance and overrides.",
+			"reasoning": "Recursive loading and deep merging of configuration files introduce moderate complexity, especially to avoid infinite loops and ensure correct override behavior. Proper testing is needed to validate inheritance logic."
+		},
+		{
+			"taskId": 12,
+			"taskTitle": "Implement 'Reference Card' Template",
+			"complexityScore": 4,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down the template into: (1) HTML table structure generation, (2) theme-based styling application, (3) unit and visual tests with mock data.",
+			"reasoning": "This is similar in complexity to the 'Skill Tree' template but uses a table-based layout. The logic is straightforward, with moderate complexity due to dynamic styling and the need for visual validation."
+		},
+		{
+			"taskId": 13,
+			"taskTitle": "Enhance CLI for Template and Theme Selection",
+			"complexityScore": 5,
+			"recommendedSubtasks": 4,
+			"expansionPrompt": "Expand CLI enhancements into: (1) argument parsing for template and theme, (2) dynamic import and invocation of template modules, (3) passing theme selection to the loader, (4) end-to-end tests for combinations of flags.",
+			"reasoning": "Adding CLI options and dynamic module loading increases complexity, especially for maintainability and test coverage. Ensuring seamless user experience with multiple combinations of options is key."
+		},
+		{
+			"taskId": 14,
+			"taskTitle": "Implement 'pick_category' Data Filtering",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Decompose category filtering into: (1) detecting and parsing the pick_category key, (2) filtering loaded data accordingly, (3) integration and tests to ensure only selected categories are merged.",
+			"reasoning": "Filtering data based on user-specified keys is a common pattern, but integrating it into the existing merge logic and ensuring correct behavior in all scenarios adds moderate complexity."
+		},
+		{
+			"taskId": 15,
+			"taskTitle": "Implement Config File Auto-Discovery",
+			"complexityScore": 3,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down auto-discovery into: (1) directory traversal and file detection logic, (2) integration with CLI argument handling, (3) tests for discovery in various directory structures.",
+			"reasoning": "File discovery and directory traversal are well-understood tasks with low algorithmic complexity. The main challenge is robust handling of edge cases and integration with the CLI."
+		},
+		{
+			"taskId": 16,
+			"taskTitle": "Implement Advanced CLI Helper Commands",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implement advanced cli helper commands.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 17,
+			"taskTitle": "Implement Icon and Theme Color Reference Validation",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implement icon and theme color reference validation.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 18,
+			"taskTitle": "Add Print-Specific CSS (@media print)",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on add print-specific css (@media print).",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 19,
+			"taskTitle": "Implement Responsive CSS for Grid Layouts",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on implement responsive css for grid layouts.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		},
+		{
+			"taskId": 20,
+			"taskTitle": "Create Documentation and Finalize Example Generator",
+			"complexityScore": 5,
+			"recommendedSubtasks": 3,
+			"expansionPrompt": "Break down this task with a focus on create documentation and finalize example generator.",
+			"reasoning": "Automatically added due to missing analysis in AI response."
+		}
+	]
+}

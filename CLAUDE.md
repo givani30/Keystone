@@ -523,4 +523,4 @@ These commands make AI calls and may take up to a minute:
 
 ---
 
-_This guide ensures Claude Code has immediate access to Task Master's essential functionality for agentic development workflows._
+_This guide provides essential context for working on the Keystone project with Claude Code and Task Master integration._
